@@ -1,0 +1,52 @@
+a {
+  text-decoration: none !important;
+  color: black !important;
+}
+
+.products_img {
+  object-fit: cover;
+  height: 400px;
+  width: 400px;
+}
+
+/* //navdropdown */
+.dropdown-toggle::after {
+  color: white !important;
+}
+
+.dropdown-menu[data-bs-popper] {
+  left: -304px !important;
+}
+
+.cart_icon {
+  position: fixed;
+  right: 10px;
+  top: 50%;
+}
+
+.login {
+  height: 100vh !important;
+  display: flex;
+  align-items: center;
+}
+.blob {
+  transform: scale(1);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    color: #7de64d;
+  }
+
+  70% {
+    transform: scale(1.5);
+    color: #499c23;
+  }
+
+  100% {
+    transform: scale(1);
+    color: #48a01f;
+  }
+}
