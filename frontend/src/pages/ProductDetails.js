@@ -5,6 +5,7 @@ import {
   Button,
   Col,
   Container,
+  Form,
   Row,
   Spinner,
   Table,
@@ -16,6 +17,7 @@ import Ratings from "../components/Ratings";
 import { Helmet } from "react-helmet-async";
 import { useStore } from "../Store";
 import ProductModal from "../components/ProductModal";
+import Slider from "react-slick";
 const initialState = { loading: false, product: [], error: false };
 
 function reducer(state, action) {
@@ -38,6 +40,7 @@ function reducer(state, action) {
 
 function ProductDetails() {
   const [relatedProducts, setRelatedProducts] = useState("");
+  const [coupon, setCoupon] = useState("");
   const [loader, setLoader] = useState(false);
   const { state, dispatch: ctxDispatch } = useStore();
   const { cart } = state;
@@ -109,6 +112,27 @@ function ProductDetails() {
     });
   };
 
+  //react slick settings
+
+  const settings = {
+    className: "center",
+    centerMode: true,
+    infinite: true,
+    centerPadding: "60px",
+    slidesToShow: 2,
+    speed: 500,
+    adaptiveHeight: true,
+  };
+
+  const applyCoupon = () => {
+    console.log(product);
+
+    if (product.coupon === coupon) {
+      var price = product.price;
+      var discount = product.discount / 100;
+      var totalValue = price - price * discount;
+    }
+  };
   return (
     <>
       <div className="mt-5 pt-5">
@@ -161,6 +185,21 @@ function ProductDetails() {
                 <Button className="bg-dark" onClick={handleAddtoCart}>
                   Add to Cart{" "}
                 </Button>
+                <div className="mt-3">
+                  <Form.Control
+                    type="text"
+                    name="coupon"
+                    placeholder="enter your coupon code"
+                    onChange={(e) => setCoupon(e.target.value)}
+                  />
+                  <Button
+                    variant="success"
+                    className="mt-2 w-100"
+                    onClick={() => applyCoupon()}
+                  >
+                    Apply Coupon
+                  </Button>
+                </div>
               </Col>
             </Row>
           </Container>
@@ -177,7 +216,9 @@ function ProductDetails() {
 
       <Row className="mt-5">
         <Col>
-          <h4 className="display-6">Products you may be Interested In</h4>
+          <h4 className="display-6 text-center">
+            Products you may be Interested In
+          </h4>
           {loader ? (
             <Spinner
               animation="border"
@@ -185,58 +226,59 @@ function ProductDetails() {
               className="text-center"
             ></Spinner>
           ) : relatedProducts ? (
-            relatedProducts.map((item) => {
-              return (
-                <div className="row">
-                  {" "}
-                  <div className="col-lg-3 col-md-6 mb-4 mb-lg-0 my-3">
-                    <div
-                      className="card rounded shadow-sm border-0"
-                      style={{ width: "250px" }}
-                    >
-                      <div className="card-body p-4">
-                        <img
-                          src={item.img}
-                          alt={item.name}
-                          className="img-fluid d-block mx-auto mb-3"
-                        />
-                        <Link to={`/products/${item.slug}`}>
-                          <h5>{item.name}</h5>
-                        </Link>
-                        <div>
-                          <Ratings
-                            ratings={item.ratings}
-                            numberOfRatings={item.numberOfRatings}
-                          ></Ratings>
+            <div className="d-flex w-100 justify-content-center">
+              <div style={{ width: "60%" }}>
+                <Slider {...settings}>
+                  {relatedProducts.map((item) => {
+                    return (
+                      <div
+                        className="card rounded shadow-sm border-0 custom-card-slick px-3"
+                        key={item._id}
+                      >
+                        <div className="card-body p-4" style={{ width: 400 }}>
+                          <img
+                            src={item.img}
+                            alt={item.name}
+                            className="img-fluid d-block mx-auto mb-3"
+                          />
+                          <Link to={`/products/${item.slug}`}>
+                            <h5>{item.name}</h5>
+                          </Link>
+                          <div>
+                            <Ratings
+                              ratings={item.ratings}
+                              numberOfRatings={item.numberOfRatings}
+                            ></Ratings>
+                          </div>
+                          <p className="small text-muted font-italic">
+                            {item.description}
+                          </p>
+                          <h4 className="small text-muted font-bold">
+                            ${item.price}
+                          </h4>
                         </div>
-                        <p className="small text-muted font-italic">
-                          {item.description}
-                        </p>
-                        <h4 className="small text-muted font-bold">
-                          ${item.price}
-                        </h4>
-                      </div>
 
-                      <div>
-                        <Button
-                          variant="secondary"
-                          onClick={() => handleModal(item.slug)}
-                          size="sm"
-                          className="w-100"
-                        >
-                          Details
-                        </Button>
+                        <div>
+                          <Button
+                            variant="secondary"
+                            onClick={() => handleModal(item.slug)}
+                            size="sm"
+                            className="w-100"
+                          >
+                            Details
+                          </Button>
+                        </div>
+                        <ProductModal
+                          slug={productSlug}
+                          lgShow={lgShow}
+                          setLgShow={setLgShow}
+                        />
                       </div>
-                      <ProductModal
-                        slug={productSlug}
-                        lgShow={lgShow}
-                        setLgShow={setLgShow}
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })
+                    );
+                  })}
+                </Slider>
+              </div>
+            </div>
           ) : (
             ""
           )}

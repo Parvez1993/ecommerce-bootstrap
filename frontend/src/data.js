@@ -10,6 +10,7 @@ let data = [
     ratings: "5",
     numberOfRatings: "120",
     stock: 3,
+    
   },
   {
     _id: "2",
@@ -22,6 +23,7 @@ let data = [
     ratings: "3.5",
     numberOfRatings: "130",
     stock: 2,
+
   },
   {
     _id: "3",
@@ -47,5 +49,20 @@ let data = [
     numberOfRatings: "100",
     stock: 0,
   },
+
+
+  {
+    _id: "5",
+    name: "Dress 5",
+    slug: "Dress5",
+    img: "/images/5.jpg",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
+    price: "400",
+    ratings: "5",
+    numberOfRatings: "120",
+    stock: 10,
+  },
+
 ];
 export default data;

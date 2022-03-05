@@ -11,6 +11,8 @@ let data = [
     numberOfRatings: "120",
     stock: 3,
     category: "women",
+    coupon: "abc",
+    discount: 20,
   },
   {
     _id: "2",
@@ -24,6 +26,8 @@ let data = [
     numberOfRatings: "130",
     stock: 2,
     category: "men",
+    coupon: "abcd",
+    discount: 25,
   },
   {
     _id: "3",
@@ -37,6 +41,8 @@ let data = [
     numberOfRatings: "140",
     stock: 0,
     category: "women",
+    coupon: "abcde",
+    discount: 10,
   },
   {
     _id: "4",
@@ -50,6 +56,40 @@ let data = [
     numberOfRatings: "100",
     stock: 2,
     category: "men",
+    coupon: "abcdef",
+    discount: 40,
+  },
+
+  {
+    _id: "5",
+    name: "Dress 5",
+    slug: "Dress5",
+    img: "/images/2.jpg",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
+    price: "400",
+    ratings: "5",
+    numberOfRatings: "120",
+    stock: 10,
+    category: "men",
+    coupon: "",
+    discount: 0,
+  },
+
+  {
+    _id: "6",
+    name: "Dress 6",
+    slug: "Dress6",
+    img: "/images/1.jpg",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
+    price: "400",
+    ratings: "5",
+    numberOfRatings: "120",
+    stock: 10,
+    category: "men",
+    coupon: "",
+    discount: 0,
   },
 ];
 

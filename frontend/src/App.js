@@ -16,6 +16,7 @@ import Login from "./pages/Login";
 import Compare from "./pages/Compare";
 import Wishlist from "./pages/Wishlist";
 
+
 function App() {
   const [show, setShow] = useState(false);
 
