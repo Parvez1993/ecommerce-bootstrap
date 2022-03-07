@@ -4,6 +4,7 @@ import {
   Button,
   Col,
   Container,
+  Form,
   ListGroup,
   Row,
   Table,
@@ -12,8 +13,18 @@ import { Helmet } from "react-helmet-async";
 import { useStore } from "../Store";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import offer from "../offer";
 function Cart() {
   const { state, dispatch } = useStore();
+  const [coupon, setCoupon] = useState("");
+  //discounted price
+  const [discount, setDiscount] = useState("");
+
+  console.log("discount", discount);
+
+  const [alert, setAlert] = useState(false);
+
   const navigate = useNavigate();
   const updateQuantity = (item, quantity) => {
     dispatch({
@@ -29,6 +40,33 @@ function Cart() {
     });
   };
 
+  //coupon
+
+  const applyCoupon = () => {
+    if (offer.find((i) => i.coupon === coupon)) {
+      let productTemp = offer.find((i) => i.coupon === coupon);
+
+      let total = state.cart.cartItems.reduce(
+        (acc, cur) => acc + cur.quantity * cur.price,
+        0
+      );
+      console.log(total, productTemp.purchase);
+      if (total > productTemp.purchase) {
+        var price = total;
+        var discount = productTemp.discount / 100;
+        var totalValue = price - price * discount;
+        console.log(totalValue);
+        setDiscount(totalValue);
+        setAlert("successfully applied");
+      } else {
+        setAlert(
+          `Purchase above ${productTemp.purchase} to get the ${productTemp.discount}% Offer`
+        );
+      }
+    } else {
+      setAlert("No such code exists");
+    }
+  };
   const handleCheckout = () => {
     navigate("/login?redirect=shipping");
   };
@@ -38,6 +76,13 @@ function Cart() {
         <title>Cart Page</title>
       </Helmet>
       <Container>
+        {alert ? (
+          <Alert variant="danger" className="my-3">
+            {alert}
+          </Alert>
+        ) : (
+          ""
+        )}
         <Row className="my-5">
           <Col lg={8}>
             {state.cart.cartItems.length <= 0 ? (
@@ -71,6 +116,7 @@ function Cart() {
                           />
                         </td>
                         <td>{item.price}</td>
+
                         <td>
                           <div className="d-flex align-items-center gap-2 justify">
                             <Button
@@ -129,14 +175,45 @@ function Cart() {
               </ListGroup.Item>
               <ListGroup.Item>
                 Total Amount:{" "}
-                {state.cart.cartItems.reduce(
-                  (acc, cur) => acc + cur.quantity * cur.price,
-                  0
-                )}{" "}
+                {discount ? (
+                  <>
+                    {" "}
+                    <del>
+                      {state.cart.cartItems.reduce(
+                        (acc, cur) => acc + cur.quantity * cur.price,
+                        0
+                      )}
+                    </del>
+                    <span> {discount}</span>
+                  </>
+                ) : (
+                  state.cart.cartItems.reduce(
+                    (acc, cur) => acc + cur.quantity * cur.price,
+                    0
+                  )
+                )}
+              </ListGroup.Item>
+              {/* coupon */}
+              <ListGroup.Item>
+                <div className="mt-3">
+                  <Form.Control
+                    type="text"
+                    name="coupon"
+                    placeholder="enter your coupon code"
+                    onChange={(e) => setCoupon(e.target.value)}
+                  />
+                  <Button
+                    variant="success"
+                    className="mt-2 w-100"
+                    onClick={() => applyCoupon()}
+                  >
+                    Apply Coupon
+                  </Button>
+                </div>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button className="w-100" onClick={handleCheckout}>
-                  Payment
+                  Checkout
                 </Button>
               </ListGroup.Item>
             </ListGroup>

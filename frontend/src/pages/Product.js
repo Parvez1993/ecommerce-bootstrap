@@ -109,6 +109,7 @@ function Product() {
                 ratings,
                 numberOfRatings,
                 slug,
+                totalSales,
               } = item;
 
               return (
@@ -202,6 +203,15 @@ function Product() {
                         </Button>
                       )}
                     </div>
+                  </div>
+                  <div>
+                    {totalSales > 100 ? (
+                      <span class="badge badge-pill badge-warning">
+                        Best Seller
+                      </span>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               );

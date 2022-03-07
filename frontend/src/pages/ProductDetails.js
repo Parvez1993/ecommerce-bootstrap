@@ -18,6 +18,7 @@ import { Helmet } from "react-helmet-async";
 import { useStore } from "../Store";
 import ProductModal from "../components/ProductModal";
 import Slider from "react-slick";
+
 const initialState = { loading: false, product: [], error: false };
 
 function reducer(state, action) {
@@ -43,7 +44,13 @@ function ProductDetails() {
   const [coupon, setCoupon] = useState("");
   const [loader, setLoader] = useState(false);
   const { state, dispatch: ctxDispatch } = useStore();
+  const [alert, setAlert] = useState(false);
   const { cart } = state;
+
+  console.log(cart);
+
+  //discounted price
+  const [discount, setDiscount] = useState("");
   const [{ product, loading, error }, dispatch] = useReducer(
     reducer,
     initialState
@@ -108,7 +115,11 @@ function ProductDetails() {
 
     ctxDispatch({
       type: "CART_ADD_ITEM",
-      payload: { ...product, quantity },
+      payload: {
+        ...product,
+        quantity,
+        price: discount ? discount : product.price,
+      },
     });
   };
 
@@ -125,16 +136,28 @@ function ProductDetails() {
   };
 
   const applyCoupon = () => {
-    console.log(product);
-
     if (product.coupon === coupon) {
       var price = product.price;
       var discount = product.discount / 100;
       var totalValue = price - price * discount;
+      setDiscount(totalValue);
+    } else {
+      setAlert(true);
     }
   };
+  // else if (offer.find((i) => i.coupon === coupon)) {
+  //   let productTemp = offer.find((i) => i.coupon === coupon);
+
+  //   let total = state.cart.cartItems.reduce(
+  //     (acc, cur) => acc + cur.quantity * cur.price,
+  //     0
+  //   );
+
+  // }
+  // console.log(discount);
   return (
     <>
+      {alert ? <Alert>The Coupon does not Exists !!!</Alert> : ""}
       <div className="mt-5 pt-5">
         {product ? (
           <Container>
@@ -156,7 +179,11 @@ function ProductDetails() {
               <Col lg={4}>
                 <div>
                   <h4 className="display-6">Item Name: {product.name}</h4>
-                  <p className="text-muted">Product Price: {product.price}</p>
+                  <p className="text-muted">
+                    Product Price:{" "}
+                    {discount ? <del>{product.price}</del> : product.price}
+                  </p>
+                  <p>{discount ? discount : ""}</p>
                   <Ratings
                     ratings={product.ratings}
                     numberOfRatings={product.numberOfRatings}
@@ -178,7 +205,15 @@ function ProductDetails() {
                     <tr>
                       <td>{product.name}</td>
                       <td>1</td>
-                      <td>{product.price}</td>
+                      <td>
+                        {" "}
+                        {discount ? (
+                          <del>{product.price}</del>
+                        ) : (
+                          product.price
+                        )}{" "}
+                        {discount}
+                      </td>
                     </tr>
                   </tbody>
                 </Table>

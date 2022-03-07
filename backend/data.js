@@ -13,6 +13,7 @@ let data = [
     category: "women",
     coupon: "abc",
     discount: 20,
+    totalSales: 100,
   },
   {
     _id: "2",
@@ -28,6 +29,7 @@ let data = [
     category: "men",
     coupon: "abcd",
     discount: 25,
+    totalSales: 200,
   },
   {
     _id: "3",
@@ -43,6 +45,7 @@ let data = [
     category: "women",
     coupon: "abcde",
     discount: 10,
+    totalSales: 30,
   },
   {
     _id: "4",
@@ -58,6 +61,7 @@ let data = [
     category: "men",
     coupon: "abcdef",
     discount: 40,
+    totalSales: 300,
   },
 
   {
@@ -74,6 +78,7 @@ let data = [
     category: "men",
     coupon: "",
     discount: 0,
+    totalSales: 50,
   },
 
   {
@@ -90,6 +95,7 @@ let data = [
     category: "men",
     coupon: "",
     discount: 0,
+    totalSales: 50,
   },
 ];
 
