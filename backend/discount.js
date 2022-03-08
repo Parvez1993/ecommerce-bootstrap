@@ -1,14 +1,5 @@
-let offer = [
-  {
-    coupon: "MERN",
-    discount: 40,
-    purchase: 2000,
-  },
-  {
-    coupon: "ALIF",
-    discount: 10,
-    purchase: 1000,
-  },
-];
+let discount = {
+  img: "/images/discount.jpg",
+};
 
-module.exports = offer;
+module.exports = discount;

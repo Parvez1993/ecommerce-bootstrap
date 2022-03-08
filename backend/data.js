@@ -97,6 +97,38 @@ let data = [
     discount: 0,
     totalSales: 50,
   },
+  {
+    _id: "7",
+    name: "Dress 7",
+    slug: "Dress 7",
+    img: "/images/child1.jpg",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
+    price: "400",
+    ratings: "5",
+    numberOfRatings: "120",
+    stock: 10,
+    category: "children",
+    coupon: "",
+    discount: 0,
+    totalSales: 50,
+  },
+  {
+    _id: "8",
+    name: "Dress 8",
+    slug: "Dress 8",
+    img: "/images/child2.jpg",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
+    price: "400",
+    ratings: "5",
+    numberOfRatings: "120",
+    stock: 10,
+    category: "children",
+    coupon: "",
+    discount: 0,
+    totalSales: 50,
+  },
 ];
 
 module.exports = data;
