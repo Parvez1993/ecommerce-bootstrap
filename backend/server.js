@@ -39,6 +39,18 @@ app.get("/discount", function (req, res) {
   res.send(discount);
 });
 
+//category
+
+app.get("/category/:cat", function (req, res) {
+  let temp = [];
+  let product = data.filter((item) => {
+    if (item.category === req.params.cat) {
+      return temp.push(item);
+    }
+  });
+  res.send(product);
+});
+
 const port = process.env.PORT || 8000;
 
 app.listen(8000, () => {
