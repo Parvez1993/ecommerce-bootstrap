@@ -95,7 +95,23 @@ function Compare() {
                   <p>Description: {product1.description}</p>
                 </div>
               ) : (
-                "Choose"
+                ""
+              )}
+
+              {product1 && product2 ? (
+                product1.ratings > product2.ratings ? (
+                  <h2>{`${product1.name} is the winner`}</h2>
+                ) : product1.ratings === product2.ratings ? (
+                  product1.price > product2.price ? (
+                    <h2>{`${product1.name} is the winner`}</h2>
+                  ) : (
+                    ""
+                  )
+                ) : (
+                  ""
+                )
+              ) : (
+                ""
               )}
             </div>
           </Col>
@@ -131,7 +147,23 @@ function Compare() {
                   <p>Description: {product2.description}</p>
                 </div>
               ) : (
-                "Choose"
+                ""
+              )}
+
+              {product1 && product2 ? (
+                product2.ratings > product1.ratings ? (
+                  <h2>{`${product2.name} is the winner`}</h2>
+                ) : product2.ratings === product1.ratings ? (
+                  product2.price > product1.price ? (
+                    <h2>{`${product2.name} is the winner`}</h2>
+                  ) : (
+                    ""
+                  )
+                ) : (
+                  ""
+                )
+              ) : (
+                ""
               )}
             </div>
           </Col>
