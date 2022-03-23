@@ -1,6 +1,5 @@
 let data = [
   {
-    _id: "1",
     name: "Dress 1",
     slug: "Dress1",
     img: "/images/1.jpg",
@@ -14,9 +13,9 @@ let data = [
     coupon: "abc",
     discount: 20,
     totalSales: 100,
+    brand: "HighX",
   },
   {
-    _id: "2",
     name: "Dress 2",
     slug: "Dress2",
     img: "/images/2.jpg",
@@ -30,9 +29,9 @@ let data = [
     coupon: "abcd",
     discount: 25,
     totalSales: 200,
+    brand: "LowX",
   },
   {
-    _id: "3",
     name: "Dress 3",
     slug: "Dress3",
     img: "/images/3.jpg",
@@ -46,9 +45,9 @@ let data = [
     coupon: "abcde",
     discount: 10,
     totalSales: 30,
+    brand: "LowX",
   },
   {
-    _id: "4",
     name: "Dress 4",
     slug: "Dress4",
     img: "/images/4.jpg",
@@ -62,10 +61,10 @@ let data = [
     coupon: "abcdef",
     discount: 40,
     totalSales: 300,
+    brand: "LowT",
   },
 
   {
-    _id: "5",
     name: "Dress 5",
     slug: "Dress5",
     img: "/images/2.jpg",
@@ -79,10 +78,10 @@ let data = [
     coupon: "",
     discount: 0,
     totalSales: 50,
+    brand: "LowT",
   },
 
   {
-    _id: "6",
     name: "Dress 6",
     slug: "Dress6",
     img: "/images/1.jpg",
@@ -96,9 +95,9 @@ let data = [
     coupon: "",
     discount: 0,
     totalSales: 50,
+    brand: "HighX",
   },
   {
-    _id: "7",
     name: "Dress 7",
     slug: "Dress 7",
     img: "/images/child1.jpg",
@@ -112,9 +111,9 @@ let data = [
     coupon: "",
     discount: 0,
     totalSales: 50,
+    brand: "HighY",
   },
   {
-    _id: "8",
     name: "Dress 8",
     slug: "Dress 8",
     img: "/images/child2.jpg",
@@ -128,6 +127,7 @@ let data = [
     coupon: "",
     discount: 0,
     totalSales: 50,
+    brand: "HighX",
   },
 ];
 

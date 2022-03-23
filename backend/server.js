@@ -4,6 +4,10 @@ const dotenv = require("dotenv");
 const discount = require("./discount");
 dotenv.config();
 const express = require("express");
+const loadProductsRoutes = require("./routes/LoadProductsRoutes");
+const productRouter = require("./routes/ProductRoutes");
+const morgan = require("morgan");
+
 const app = express();
 
 const DB = process.env.DATABASE_LOCAL;
@@ -14,18 +18,16 @@ mongoose
   })
   .catch((err) => console.log(err));
 
-app.get("/", function (req, res) {
-  res.send("Hello World");
-});
+app.use("/api/v1/products", loadProductsRoutes);
 
-app.get("/products", function (req, res) {
-  res.send(data);
-});
+app.use("/products", productRouter);
 
-app.get("/products/:slug", function (req, res) {
-  let product = data.find((item) => item.slug === req.params.slug);
-  res.send(product);
-});
+morgan("tiny");
+
+// app.get("/products/:slug", function (req, res) {
+//   let product = data.find((item) => item.slug === req.params.slug);
+//   res.send(product);
+// });
 
 app.get("/cartItems/:id", function (req, res) {
   const params = req.params.id;

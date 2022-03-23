@@ -5,18 +5,17 @@ import Appbar from "./components/Appbar";
 import ProductDetails from "./pages/ProductDetails";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
-import Product from "./pages/Product";
+// import Product from "./pages/Product";
 import Cart from "./components/Cart";
 import { BsFillCartCheckFill } from "react-icons/bs";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Offcanvas, Table, Button } from "react-bootstrap";
 import { useStore } from "./Store";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import Login from "./pages/Login";
 import Compare from "./pages/Compare";
 import Wishlist from "./pages/Wishlist";
-
-
+const Product = React.lazy(() => import("./pages/Product"));
 function App() {
   const [show, setShow] = useState(false);
 
@@ -130,7 +129,20 @@ function App() {
         />
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/products" element={<Product />}></Route>
+          <Route
+            path="/products"
+            element={
+              <React.Suspense
+                fallback={
+                  <>
+                    <h3>Loading</h3>
+                  </>
+                }
+              >
+                <Product />
+              </React.Suspense>
+            }
+          ></Route>
           <Route path="/products/:slug" element={<ProductDetails />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/login" element={<Login />}></Route>
