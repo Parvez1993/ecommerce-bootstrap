@@ -36,13 +36,17 @@ const ProductSchema = new mongoose.Schema(
       required: [true, "Please provide description"],
     },
     stock: { type: Number, required: [true, "Please enter stock"] },
-    rating: {
+    ratings: {
       type: Number,
       default: 0,
     },
     numberOfRatings: {
       type: Number,
       default: 0,
+    },
+    price: {
+      type: Number,
+      required: [true, "Please provide price"],
     },
   },
   {

@@ -5,7 +5,7 @@ let data = [
     img: "/images/1.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "400",
+    price: 400,
     ratings: "5",
     numberOfRatings: "120",
     stock: 3,
@@ -21,7 +21,7 @@ let data = [
     img: "/images/2.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "600",
+    price: 600,
     ratings: "3.5",
     numberOfRatings: "130",
     stock: 2,
@@ -37,7 +37,7 @@ let data = [
     img: "/images/3.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "800",
+    price: 800,
     ratings: "4",
     numberOfRatings: "140",
     stock: 0,
@@ -53,7 +53,7 @@ let data = [
     img: "/images/4.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "900",
+    price: 900,
     ratings: "4.5",
     numberOfRatings: "100",
     stock: 2,
@@ -70,7 +70,7 @@ let data = [
     img: "/images/2.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "400",
+    price: 400,
     ratings: "5",
     numberOfRatings: "120",
     stock: 10,
@@ -87,7 +87,7 @@ let data = [
     img: "/images/1.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "400",
+    price: 400,
     ratings: "5",
     numberOfRatings: "120",
     stock: 10,
@@ -103,7 +103,7 @@ let data = [
     img: "/images/child1.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "400",
+    price: 400,
     ratings: "5",
     numberOfRatings: "120",
     stock: 10,
@@ -119,7 +119,7 @@ let data = [
     img: "/images/child2.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "400",
+    price: 800,
     ratings: "5",
     numberOfRatings: "120",
     stock: 10,
