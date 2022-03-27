@@ -50,3 +50,22 @@ exports.register = async (req, res, next) => {
 
   createSendToken(user, StatusCodes.CREATED, req, res);
 };
+
+exports.login = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // 1) Check if email and password exist
+  if (!email || !password) {
+    throw new BadRequestError("Please provide all the values");
+  }
+  // 2) Check if user exists && password is correct
+  const user = await User.findOne({ email }).select("+password");
+
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    throw new UnAuthenticatedError("Incorrect credentials");
+  }
+
+  // 3) If everything ok, send token to client
+
+  createSendToken(user, StatusCodes.CREATED, req, res);
+};
