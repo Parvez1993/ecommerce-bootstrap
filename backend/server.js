@@ -1,10 +1,23 @@
+const express = require("express");
+require("express-async-errors");
 const data = require("./data.js");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const discount = require("./discount");
 dotenv.config();
-const express = require("express");
+
+const loadProductsRoutes = require("./routes/LoadProductsRoutes");
+const productRouter = require("./routes/ProductRoutes");
+const userRouter = require("./routes/AuthRoutes");
+const morgan = require("morgan");
+const notFoundMiddleware = require("./middleware/notFoundMiddleware.js");
+const errorMiddleware = require("./middleware/error-handler.js");
+
 const app = express();
+
+if (process.env.NODE_ENV !== "production") {
+  app.use(morgan("dev"));
+}
 
 const DB = process.env.DATABASE_LOCAL;
 
@@ -14,18 +27,20 @@ mongoose
   })
   .catch((err) => console.log(err));
 
-app.get("/", function (req, res) {
-  res.send("Hello World");
-});
+morgan("tiny");
 
-app.get("/products", function (req, res) {
-  res.send(data);
-});
+app.use(express.json());
 
-app.get("/products/:slug", function (req, res) {
-  let product = data.find((item) => item.slug === req.params.slug);
-  res.send(product);
-});
+app.use("/api/v1/products", loadProductsRoutes);
+
+app.use("/products", productRouter);
+
+app.use("/users", userRouter);
+
+// app.get("/products/:slug", function (req, res) {
+//   let product = data.find((item) => item.slug === req.params.slug);
+//   res.send(product);
+// });
 
 app.get("/cartItems/:id", function (req, res) {
   const params = req.params.id;
@@ -49,6 +64,25 @@ app.get("/category/:cat", function (req, res) {
     }
   });
   res.send(product);
+});
+
+app.use(notFoundMiddleware);
+app.use(errorMiddleware);
+
+//unhandled error
+
+process.on("unhandledRejection", (err) => {
+  console.log("UNHANDLED REJECTION! 💥 Shutting down...");
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+process.on("uncaughtException", (err) => {
+  console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
+  console.log(err.name, err.message);
+  process.exit(1);
 });
 
 const port = process.env.PORT || 8000;

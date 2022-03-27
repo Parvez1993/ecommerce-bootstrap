@@ -47,6 +47,7 @@ function Product() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const tempProducts = await axios.get("/products");
+        console.log(tempProducts);
         dispatch({ type: "FETCH_SUCCESS", payload: tempProducts.data });
       } catch (error) {
         dispatch({ type: "FETCH_FAIL" });

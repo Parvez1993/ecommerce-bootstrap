@@ -1,12 +1,11 @@
 let data = [
   {
-    _id: "1",
     name: "Dress 1",
     slug: "Dress1",
     img: "/images/1.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "400",
+    price: 400,
     ratings: "5",
     numberOfRatings: "120",
     stock: 3,
@@ -14,15 +13,15 @@ let data = [
     coupon: "abc",
     discount: 20,
     totalSales: 100,
+    brand: "HighX",
   },
   {
-    _id: "2",
     name: "Dress 2",
     slug: "Dress2",
     img: "/images/2.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "600",
+    price: 600,
     ratings: "3.5",
     numberOfRatings: "130",
     stock: 2,
@@ -30,15 +29,15 @@ let data = [
     coupon: "abcd",
     discount: 25,
     totalSales: 200,
+    brand: "LowX",
   },
   {
-    _id: "3",
     name: "Dress 3",
     slug: "Dress3",
     img: "/images/3.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "800",
+    price: 800,
     ratings: "4",
     numberOfRatings: "140",
     stock: 0,
@@ -46,15 +45,15 @@ let data = [
     coupon: "abcde",
     discount: 10,
     totalSales: 30,
+    brand: "LowX",
   },
   {
-    _id: "4",
     name: "Dress 4",
     slug: "Dress4",
     img: "/images/4.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "900",
+    price: 900,
     ratings: "4.5",
     numberOfRatings: "100",
     stock: 2,
@@ -62,16 +61,16 @@ let data = [
     coupon: "abcdef",
     discount: 40,
     totalSales: 300,
+    brand: "LowT",
   },
 
   {
-    _id: "5",
     name: "Dress 5",
     slug: "Dress5",
     img: "/images/2.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "400",
+    price: 400,
     ratings: "5",
     numberOfRatings: "120",
     stock: 10,
@@ -79,16 +78,16 @@ let data = [
     coupon: "",
     discount: 0,
     totalSales: 50,
+    brand: "LowT",
   },
 
   {
-    _id: "6",
     name: "Dress 6",
     slug: "Dress6",
     img: "/images/1.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "400",
+    price: 400,
     ratings: "5",
     numberOfRatings: "120",
     stock: 10,
@@ -96,15 +95,15 @@ let data = [
     coupon: "",
     discount: 0,
     totalSales: 50,
+    brand: "HighX",
   },
   {
-    _id: "7",
     name: "Dress 7",
     slug: "Dress 7",
     img: "/images/child1.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "400",
+    price: 400,
     ratings: "5",
     numberOfRatings: "120",
     stock: 10,
@@ -112,15 +111,15 @@ let data = [
     coupon: "",
     discount: 0,
     totalSales: 50,
+    brand: "HighY",
   },
   {
-    _id: "8",
     name: "Dress 8",
     slug: "Dress 8",
     img: "/images/child2.jpg",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel molestie turpis. Morbi at purus scelerisque, lobortis turpis ac, maximus dolor.",
-    price: "400",
+    price: 800,
     ratings: "5",
     numberOfRatings: "120",
     stock: 10,
@@ -128,6 +127,7 @@ let data = [
     coupon: "",
     discount: 0,
     totalSales: 50,
+    brand: "HighX",
   },
 ];
 
