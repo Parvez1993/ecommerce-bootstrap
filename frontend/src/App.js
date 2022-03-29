@@ -15,6 +15,7 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import Login from "./pages/Login";
 import Compare from "./pages/Compare";
 import Wishlist from "./pages/Wishlist";
+import Shipping from "./pages/Shipping";
 const Product = React.lazy(() => import("./pages/Product"));
 function App() {
   const [show, setShow] = useState(false);
@@ -148,6 +149,7 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/compare" element={<Compare />}></Route>
           <Route path="/wishlist" element={<Wishlist />}></Route>
+          <Route path="/shipping" element={<Shipping />}></Route>
         </Routes>
       </BrowserRouter>
     </>
