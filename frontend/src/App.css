@@ -29,6 +29,7 @@ a {
   height: 100vh !important;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 .blob {
   transform: scale(1);

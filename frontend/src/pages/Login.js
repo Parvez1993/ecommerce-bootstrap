@@ -39,23 +39,51 @@ function Login() {
           password,
         });
 
-        if (data) {
-          navigate(`/${redirect}`);
-        }
         dispatch3({
           type: "LOGIN_SUCCESS",
           payload: { email, password },
         });
 
         localStorage.setItem("userInfo", JSON.stringify(data));
-      } catch (error) {
-        // dispatch3({
-        //   type: "LOGIN_FAIL",
-        //   payload: { error: error.response.data.msg },
-        // });
-        // toast.error(error.response.data.msg);
 
-        console.log(error);
+        if (data) {
+          navigate(`/${redirect}`);
+        }
+      } catch (error) {
+        dispatch3({
+          type: "LOGIN_FAIL",
+          payload: { error: error.response.data.msg },
+        });
+        toast.error(error.response.data.msg);
+      }
+    } else {
+      if (!email || !password || !name) {
+        return toast("Fill out all the forms");
+      }
+      dispatch3({ type: "REGISTER_BEGIN" });
+      try {
+        const { data } = await axios.post(`/users/register`, {
+          email,
+          password,
+          name,
+        });
+
+        dispatch3({
+          type: "REGISTER_SUCCESS",
+          payload: { email, password, name },
+        });
+
+        localStorage.setItem("userInfo", JSON.stringify(data));
+
+        if (data) {
+          navigate(`/${redirect}`);
+        }
+      } catch (error) {
+        dispatch3({
+          type: "REGISTER_FAIL",
+          payload: { error: error.response.data.msg },
+        });
+        toast.error(error.response.data.msg);
       }
     }
   };

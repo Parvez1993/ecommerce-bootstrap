@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import ConfirmationSteps from "../components/ConfirmationSteps";
 import { useStore } from "../Store";
 
 function Shipping() {
@@ -16,7 +18,7 @@ function Shipping() {
     state4.shippingInfo?.phoneNumber
   );
 
-  console.log(state4);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,6 +51,7 @@ function Shipping() {
           phoneNumber,
         })
       );
+      navigate("/payment");
     } catch (error) {
       dispatch4({
         type: "SHIPPING_FAIL",
@@ -61,6 +64,11 @@ function Shipping() {
       <Helmet>
         <title>Shipping</title>
       </Helmet>
+      <ConfirmationSteps
+        checkout={true}
+        payment={false}
+        confirm={false}
+      ></ConfirmationSteps>
       <Container>
         <ToastContainer
           position="top-center"
@@ -140,7 +148,7 @@ function Shipping() {
                   type="text"
                   className="form-control"
                   placeholder="Country"
-                  onChange={(e) => setCountry(e.target.value)} 
+                  onChange={(e) => setCountry(e.target.value)}
                   required
                   value={country}
                 />

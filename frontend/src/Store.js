@@ -123,6 +123,7 @@ let userInitialState = {
 };
 function reducer3(state, action) {
   switch (action.type) {
+    //login
     case "LOGIN_BEGIN":
       // localStorage.setItem("userInfo", JSON.stringify(userInfo));
       return {
@@ -147,6 +148,33 @@ function reducer3(state, action) {
         loading: false,
         error: action.payload.error,
       };
+    //register
+
+    case "REGISTER_BEGIN":
+      // localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      return {
+        ...state,
+        loading: true,
+        error: "",
+      };
+
+    case "REGISTER_SUCCESS":
+      let info = action.payload;
+      localStorage.setItem("userInfo", JSON.stringify(info));
+      return {
+        ...state,
+        loading: false,
+        error: "",
+        userInfo: info,
+      };
+
+    case "REGISTER_FAIL":
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+      };
+
     case "LOGOUT_USER":
       return {
         ...state,
