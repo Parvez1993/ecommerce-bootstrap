@@ -12,7 +12,7 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import { useStore } from "../Store";
 
 function Appbar() {
-  const { state, dispatch, state2 } = useStore();
+  const { state, dispatch, state2, state3, dispatch3 } = useStore();
 
   const updateQuantity = (item, quantity) => {
     dispatch({
@@ -30,6 +30,15 @@ function Appbar() {
 
   console.log(state.cart);
 
+  const handleLogout = () => {
+    dispatch3({
+      type: "LOGOUT_USER",
+    });
+    localStorage.setItem("userInfo", null);
+  };
+
+  console.log("this", state3.userInfo);
+
   return (
     <Navbar bg="dark" expand="lg" className="text-white">
       <Container>
@@ -42,9 +51,15 @@ function Appbar() {
             <Nav.Link href="/products" className="text-white">
               Products
             </Nav.Link>
-            <Nav.Link href="/login" className="text-white">
-              Login
-            </Nav.Link>
+            {state3.userInfo !== null ? (
+              <Nav.Link className="text-white" onClick={handleLogout}>
+                Logout
+              </Nav.Link>
+            ) : (
+              <Nav.Link href="/login" className="text-white">
+                Login
+              </Nav.Link>
+            )}
             <Nav.Link href="/compare" className="text-white">
               Compare
             </Nav.Link>

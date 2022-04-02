@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet-async";
 import { useStore } from "../Store";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import ProductModal from "../components/ProductModal";
-
+import ReactCardFlip from "react-card-flip";
 const initialState = {
   loading: false,
   products: [],
@@ -36,6 +36,7 @@ function Product() {
   const { state, dispatch: ctxDispatch, state2, dispatch2 } = useStore();
   const [productSlug, setProductSlug] = useState("");
   const [lgShow, setLgShow] = useState(false);
+  const [flipped, setFlipped] = useState(false);
   const { cart } = state;
   const [{ products, loading, error }, dispatch] = useReducer(
     reducer,
@@ -74,7 +75,7 @@ function Product() {
     );
     let quantity = existingItem ? existingItem.quantity + 1 : 1;
 
-    if (product.stock < quantity) {
+    if (product.stock <= quantity) {
       quantity = product.stock;
       return window.alert("No Stock left");
     }
@@ -136,74 +137,71 @@ function Product() {
                       </p>
                       <h4 className="small text-muted font-bold">${price}</h4>
                     </div>
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <Button
-                          variant="secondary"
-                          onClick={() => handleModal(slug)}
-                        >
-                          Details
-                        </Button>
-                      </div>
-                      <ProductModal
-                        slug={productSlug}
-                        lgShow={lgShow}
-                        setLgShow={setLgShow}
-                      />
+                    <div className="d-flex justify-content-around align-items-center w-100">
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleModal(slug)}
+                      >
+                        Details
+                      </Button>
+
                       <Button
                         variant="secondary"
                         onClick={() => handleWishList(item)}
                       >
                         WishList
                       </Button>
-                      <div>
-                        {" "}
-                        {state.cart.cartItems.map((itemz) => {
-                          return itemz._id === item._id ? (
-                            <>
-                              <div className="d-flex align-items-center gap-2 justify-content-center">
-                                <Button
-                                  onClick={() =>
-                                    updateQuantity(itemz, itemz.quantity + 1)
-                                  }
-                                  disabled={
-                                    itemz.quantity >= item.stock ? true : false
-                                  }
-                                >
-                                  <FaPlus />
-                                </Button>
-                                <h6>{itemz.quantity}</h6>
-                                <Button
-                                  variant="warning"
-                                  onClick={() =>
-                                    updateQuantity(itemz, itemz.quantity - 1)
-                                  }
-                                  disabled={item.quantity <= 1 ? true : false}
-                                >
-                                  <FaMinus />
-                                </Button>
-                              </div>
-                            </>
-                          ) : (
-                            ""
-                          );
-                        })}
-                      </div>
+
+                      <ProductModal
+                        slug={productSlug}
+                        lgShow={lgShow}
+                        setLgShow={setLgShow}
+                      />
                     </div>
-                    <div className="my-2">
-                      {item.stock === 0 ? (
-                        <Button className="bg-dark w-100" disabled>
-                          Out of stock
-                        </Button>
+                    {state.cart.cartItems.map((itemz) => {
+                      return itemz._id === item._id ? (
+                        <>
+                          <div className="d-flex align-items-center gap-2 justify-content-center mt-2">
+                            <Button
+                              onClick={() =>
+                                updateQuantity(itemz, itemz.quantity + 1)
+                              }
+                              disabled={
+                                itemz.quantity >= item.stock ? true : false
+                              }
+                            >
+                              <FaPlus />
+                            </Button>
+                            <h6>{itemz.quantity}</h6>
+                            <Button
+                              variant="warning"
+                              onClick={() =>
+                                updateQuantity(itemz, itemz.quantity - 1)
+                              }
+                              disabled={itemz.quantity <= 0 ? true : false}
+                            >
+                              <FaMinus />
+                            </Button>
+                          </div>
+                        </>
                       ) : (
-                        <Button
-                          className="bg-dark w-100"
-                          onClick={() => handleAddtoCart(item)}
-                        >
-                          Add to Cart{" "}
-                        </Button>
-                      )}
-                    </div>
+                        ""
+                      );
+                    })}
+                  </div>
+                  <div className="my-2">
+                    {item.stock === 0 ? (
+                      <Button className="bg-dark w-100" disabled>
+                        Out of stock
+                      </Button>
+                    ) : (
+                      <Button
+                        className="bg-dark w-100"
+                        onClick={() => handleAddtoCart(item)}
+                      >
+                        Add to Cart{" "}
+                      </Button>
+                    )}
                   </div>
                   <div>
                     {totalSales > 100 ? (

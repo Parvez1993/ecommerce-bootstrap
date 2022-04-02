@@ -117,7 +117,7 @@ function reducer2(state, action) {
 let userInitialState = {
   userInfo: localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
-    : [],
+    : null,
   loading: false,
   error: "",
 };
@@ -147,6 +147,13 @@ function reducer3(state, action) {
         loading: false,
         error: action.payload.error,
       };
+    case "LOGOUT_USER":
+      return {
+        ...state,
+        userInfo: null,
+        loading: false,
+        error: "",
+      };
     default:
       return state;
   }
@@ -154,15 +161,15 @@ function reducer3(state, action) {
 
 //shipping Reducers////////////////
 let shippingIntialState = {
-  userInfo: localStorage.getItem("userInfo")
-    ? JSON.parse(localStorage.getItem("userInfo"))
+  shippingInfo: localStorage.getItem("shippingInfo")
+    ? JSON.parse(localStorage.getItem("shippingInfo"))
     : [],
   loading: false,
   error: "",
 };
 function reducer4(state, action) {
   switch (action.type) {
-    case "LOGIN_BEGIN":
+    case "SHIPPING_BEGIN":
       // localStorage.setItem("userInfo", JSON.stringify(userInfo));
       return {
         ...state,
@@ -170,17 +177,17 @@ function reducer4(state, action) {
         error: "",
       };
 
-    case "LOGIN_SUCCESS":
-      let userInfo = action.payload;
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    case "SHIPPING_SUCCESS":
+      let shippingInfo = action.payload;
+      localStorage.setItem("shippingInfo", JSON.stringify(shippingInfo));
       return {
         ...state,
         loading: false,
         error: "",
-        userInfo: userInfo,
+        shippingInfo: shippingInfo,
       };
 
-    case "LOGIN_FAIL":
+    case "SHIPPING_FAIL":
       return {
         ...state,
         loading: false,
@@ -195,8 +202,17 @@ export const StoreProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [state2, dispatch2] = useReducer(reducer2, initialState2);
   const [state3, dispatch3] = useReducer(reducer3, userInitialState);
-  const [state4, dispatch4] = useReducer(reducer3, shippingIntialState);
-  let value = { state, dispatch, state2, dispatch2, state3, dispatch3 };
+  const [state4, dispatch4] = useReducer(reducer4, shippingIntialState);
+  let value = {
+    state,
+    dispatch,
+    state2,
+    dispatch2,
+    state3,
+    dispatch3,
+    state4,
+    dispatch4,
+  };
   return (
     <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
   );

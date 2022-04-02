@@ -2,19 +2,58 @@ import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { toast, ToastContainer } from "react-toastify";
+import { useStore } from "../Store";
 
 function Shipping() {
-  const [fullname, setFullname] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [postCode, setPostCode] = useState("");
-  const [country, setCountry] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const { state4, dispatch4 } = useStore();
+
+  const [fullname, setFullname] = useState(state4.shippingInfo?.fullname);
+  const [address, setAddress] = useState(state4.shippingInfo?.address);
+  const [city, setCity] = useState(state4.shippingInfo?.city);
+  const [postCode, setPostCode] = useState(state4.shippingInfo?.postCode);
+  const [country, setCountry] = useState(state4.shippingInfo?.country);
+  const [phoneNumber, setPhoneNumber] = useState(
+    state4.shippingInfo?.phoneNumber
+  );
+
+  console.log(state4);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if ((!fullname, !address, !city, !postCode, !country, !phoneNumber)) {
+    if (
+      !fullname &&
+      !address &&
+      !city &&
+      !postCode &&
+      !country &&
+      !phoneNumber
+    ) {
       return toast.warning("Fill the Enter Form");
+    }
+
+    dispatch4({ type: "SHIPPING_BEGIN" });
+
+    try {
+      dispatch4({
+        type: "SHIPPING_SUCCESS",
+        payload: { fullname, address, city, postCode, country, phoneNumber },
+      });
+      localStorage.setItem(
+        "shippingInfo",
+        JSON.stringify({
+          fullname,
+          address,
+          city,
+          postCode,
+          country,
+          phoneNumber,
+        })
+      );
+    } catch (error) {
+      dispatch4({
+        type: "SHIPPING_FAIL",
+        payload: { error: error.response.data.msg },
+      });
     }
   };
   return (
@@ -44,6 +83,7 @@ function Shipping() {
                 <input
                   type="text"
                   className="form-control"
+                  value={fullname}
                   placeholder="full name"
                   onChange={(e) => setFullname(e.target.value)}
                   required
@@ -58,6 +98,7 @@ function Shipping() {
                   placeholder="address"
                   onChange={(e) => setAddress(e.target.value)}
                   required
+                  value={address}
                 />
               </div>
               <div className="form-group my-3">
@@ -68,6 +109,7 @@ function Shipping() {
                   placeholder="Phone number"
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   required
+                  value={phoneNumber}
                 />
               </div>
               <div className="form-group my-3">
@@ -77,6 +119,7 @@ function Shipping() {
                   className="form-control"
                   placeholder="city"
                   onChange={(e) => setCity(e.target.value)}
+                  value={city}
                   required
                 />
               </div>
@@ -88,6 +131,7 @@ function Shipping() {
                   placeholder="postCode"
                   onChange={(e) => setPostCode(e.target.value)}
                   required
+                  value={postCode}
                 />
               </div>
               <div className="form-group my-3">
@@ -96,8 +140,9 @@ function Shipping() {
                   type="text"
                   className="form-control"
                   placeholder="Country"
-                  onChange={(e) => setCountry(e.target.value)}
+                  onChange={(e) => setCountry(e.target.value)} 
                   required
+                  value={country}
                 />
               </div>
 

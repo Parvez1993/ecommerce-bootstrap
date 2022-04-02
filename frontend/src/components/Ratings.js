@@ -3,8 +3,9 @@ import { Badge } from "react-bootstrap";
 
 function Ratings({ ratings, numberOfRatings }) {
   return (
-    <div className="d-flex justify-content-between">
-      <div>
+    <>
+      {" "}
+      <div className="w-75">
         {ratings >= 1 ? (
           <i className="fas fa-star"></i>
         ) : ratings >= 0.5 ? (
@@ -50,7 +51,7 @@ function Ratings({ ratings, numberOfRatings }) {
           No of Ratings <Badge bg="secondary">{numberOfRatings}</Badge>
         </p>
       </div>
-    </div>
+    </>
   );
 }
 

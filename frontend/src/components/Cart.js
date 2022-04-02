@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import offer from "../offer";
 function Cart() {
-  const { state, dispatch } = useStore();
+  const { state, dispatch, state3 } = useStore();
   const [coupon, setCoupon] = useState("");
   //discounted price
   const [discount, setDiscount] = useState("");
@@ -68,7 +68,9 @@ function Cart() {
     }
   };
   const handleCheckout = () => {
-    navigate("/login?redirect=shipping");
+    const route =
+      state3.userInfo === null ? "login?redirect=shipping" : "shipping";
+    navigate(`/${route}`);
   };
   return (
     <>

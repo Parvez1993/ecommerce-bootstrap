@@ -15,7 +15,7 @@ function Login() {
   console.log(state3);
   console.log(redirectURL);
 
-  let redirect = redirectURL ? redirectURL : "/";
+  let redirect = redirectURL ? redirectURL : "";
 
   // console.log(redirect);
   const [isMember, setIsMember] = useState(true);
@@ -38,7 +38,6 @@ function Login() {
           email,
           password,
         });
-        localStorage.setItem("userInfo", JSON.stringify(data));
 
         if (data) {
           navigate(`/${redirect}`);
@@ -47,12 +46,16 @@ function Login() {
           type: "LOGIN_SUCCESS",
           payload: { email, password },
         });
+
+        localStorage.setItem("userInfo", JSON.stringify(data));
       } catch (error) {
-        dispatch3({
-          type: "LOGIN_FAIL",
-          payload: { error: error.response.data.msg },
-        });
-        toast.error(error.response.data.msg);
+        // dispatch3({
+        //   type: "LOGIN_FAIL",
+        //   payload: { error: error.response.data.msg },
+        // });
+        // toast.error(error.response.data.msg);
+
+        console.log(error);
       }
     }
   };
