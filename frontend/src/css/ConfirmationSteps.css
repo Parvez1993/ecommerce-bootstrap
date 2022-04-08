@@ -63,11 +63,13 @@
 }
 
 .progressbar li.active:before {
-  background: #55b776 url("../img/icon.png") no-repeat center center;
+  background: #55b776 url("https://img.icons8.com/nolan/64/double-tick.png")
+    no-repeat center center;
   background-size: 60%;
 }
 .progressbar li::before {
-  background: #fff url("../img/icon.png") no-repeat center center;
+  background: #fff url("https://img.icons8.com/nolan/64/double-tick.png")
+    no-repeat center center;
   background-size: 60%;
 }
 
@@ -77,4 +79,6 @@
 .progressbar li:before {
   content: counter(step);
   counter-increment: step;
+  color: white;
+  font-size: 20px;
 }

@@ -226,11 +226,52 @@ function reducer4(state, action) {
   }
 }
 
+//payment Reducers////////////////
+let paymentIntialState = {
+  paymentInfo: localStorage.getItem("paymentInfo")
+    ? JSON.parse(localStorage.getItem("paymentInfo"))
+    : [],
+  loading: false,
+  error: "",
+};
+
+function reducer5(state, action) {
+  switch (action.type) {
+    case "PAYMENT_BEGIN":
+      // localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      return {
+        ...state,
+        loading: true,
+        error: "",
+      };
+
+    case "PAYMENT_SUCCESS":
+      let paymentInfo = action.payload;
+      localStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
+      return {
+        ...state,
+        loading: false,
+        error: "",
+        paymentInfo: paymentInfo,
+      };
+
+    case "PAYMENT_FAIL":
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+      };
+    default:
+      return state;
+  }
+}
+
 export const StoreProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [state2, dispatch2] = useReducer(reducer2, initialState2);
   const [state3, dispatch3] = useReducer(reducer3, userInitialState);
   const [state4, dispatch4] = useReducer(reducer4, shippingIntialState);
+  const [state5, dispatch5] = useReducer(reducer5, paymentIntialState);
   let value = {
     state,
     dispatch,
@@ -240,6 +281,8 @@ export const StoreProvider = ({ children }) => {
     dispatch3,
     state4,
     dispatch4,
+    state5,
+    dispatch5,
   };
   return (
     <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
