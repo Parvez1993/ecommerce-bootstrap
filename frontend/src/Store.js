@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useReducer } from "react";
 
 //step 1
@@ -272,6 +272,8 @@ export const StoreProvider = ({ children }) => {
   const [state3, dispatch3] = useReducer(reducer3, userInitialState);
   const [state4, dispatch4] = useReducer(reducer4, shippingIntialState);
   const [state5, dispatch5] = useReducer(reducer5, paymentIntialState);
+  //discounted price
+  const [discount, setDiscount] = useState("");
   let value = {
     state,
     dispatch,
@@ -283,6 +285,8 @@ export const StoreProvider = ({ children }) => {
     dispatch4,
     state5,
     dispatch5,
+    discount,
+    setDiscount,
   };
   return (
     <StoreContext.Provider value={value}>{children}</StoreContext.Provider>

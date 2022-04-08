@@ -16,12 +16,9 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import offer from "../offer";
 function Cart() {
-  const { state, dispatch, state3 } = useStore();
+  const { state, dispatch, state3, discount, setDiscount } = useStore();
   const [coupon, setCoupon] = useState("");
   //discounted price
-  const [discount, setDiscount] = useState("");
-
-  console.log("discount", discount);
 
   const [alert, setAlert] = useState(false);
 
