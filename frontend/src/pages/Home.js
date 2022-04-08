@@ -13,13 +13,14 @@ import {
 import "../css/Home.css";
 import Ratings from "../components/Ratings";
 import { Link } from "react-router-dom";
+import Loading from "../components/Loading";
 function Home() {
   const [img, setImg] = useState("");
   const [category, setCategory] = useState("");
   const [loader, setLoader] = useState(false);
   const [products, setProducts] = useState("");
   const [allproducts, setAllproducts] = useState("");
-
+  const [loading, setLoading] = useState(true);
   const [searchResult, setSearchResult] = useState([]);
 
   useEffect(() => {
@@ -28,6 +29,7 @@ function Home() {
         const { data } = await axios.get("/products");
         setProducts(data);
         setAllproducts(data);
+        setLoading(false);
       } catch (error) {
         console.log("");
       }
@@ -37,13 +39,16 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    const getImg = async () => {
-      const { data } = await axios.get("/discount");
-      setImg(data);
-    };
+    if (products.length > 1 && loading) {
+      const getImg = async () => {
+        const { data } = await axios.get("/discount");
+        setImg(data);
+      };
 
-    getImg();
-  }, []);
+      getImg();
+    }
+  }, [products, loading]);
+
   let tempArr = [];
   useEffect(() => {
     const getCat = async () => {
@@ -97,7 +102,13 @@ function Home() {
     setSearchResult(searchArray);
   };
 
-  console.log(searchResult);
+  if (loading) {
+    return (
+      <>
+        <Loading />
+      </>
+    );
+  }
 
   return (
     <>
@@ -106,23 +117,6 @@ function Home() {
       </Helmet>
 
       <div className="cover"></div>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Body>
-          <div>
-            <img
-              src={img.img}
-              alt="discount"
-              style={{ height: "200px", width: "100%" }}
-            />
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
 
       <div className="search_bar">
         <Container>
@@ -262,6 +256,22 @@ function Home() {
                   </div>
                 );
               })}
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Body>
+              <div>
+                <img
+                  src={img.img}
+                  alt="discount"
+                  style={{ height: "200px", width: "100%" }}
+                />
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </Row>
       ) : products ? (
         ""
