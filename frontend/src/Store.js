@@ -266,12 +266,50 @@ function reducer5(state, action) {
   }
 }
 
+//////////////////////place order ////////////////////////////////
+const reducer6 = (state, action) => {
+  switch (action.type) {
+    case "CREATE_REQUEST":
+      return { ...state, loading: true };
+    case "CREATE_SUCCESS":
+      return { ...state, loading: false };
+    case "CREATE_FAIL":
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+};
+//////////////////////order//////////////////////////////////////
+
+const orderIntialState = {
+  loading: false,
+  order: true,
+  error: "",
+};
+
+const reducer7 = (state, action) => {
+  switch (action.type) {
+    case "FETCH_REQUEST":
+      return { ...state, loading: true, error: "" };
+    case "FETCH_SUCCESS":
+      return { ...state, loading: false, order: action.payload, error: "" };
+    case "FETCH_FAIL":
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
 export const StoreProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [state2, dispatch2] = useReducer(reducer2, initialState2);
   const [state3, dispatch3] = useReducer(reducer3, userInitialState);
   const [state4, dispatch4] = useReducer(reducer4, shippingIntialState);
   const [state5, dispatch5] = useReducer(reducer5, paymentIntialState);
+  const [state6, dispatch6] = useReducer(reducer6, {
+    loading: false,
+  });
+  const [state7, dispatch7] = useReducer(reducer7, orderIntialState);
   //discounted price
   const [discount, setDiscount] = useState("");
   let value = {
@@ -287,6 +325,8 @@ export const StoreProvider = ({ children }) => {
     dispatch5,
     discount,
     setDiscount,
+    state6,
+    dispatch6,
   };
   return (
     <StoreContext.Provider value={value}>{children}</StoreContext.Provider>

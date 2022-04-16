@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import {
   Alert,
@@ -18,11 +19,33 @@ import { useStore } from "../Store";
 import ConfirmationSteps from "./ConfirmationSteps";
 
 function ConfirmOrder() {
-  const { state4, dispatch4, state5, dispatch5, state, dispatch, discount } =
-    useStore();
+  const {
+    state4,
+    dispatch4,
+    state5,
+    dispatch5,
+    state,
+    dispatch,
+    discount,
+    state3,
+  } = useStore();
 
   const navigate = useNavigate();
 
+  let totalPrice = state.cart.cartItems.reduce(
+    (acc, cur) => acc + cur.quantity * cur.price,
+    0
+  );
+
+  let shipping = 0;
+
+  let tax = discount
+    ? discount
+    : totalPrice <= 500
+    ? 0
+    : (totalPrice * 5) / 100;
+
+  console.log(totalPrice);
   if (!state4.shippingInfo && !state5.paymentInfo) {
     navigate("/cart");
   }
@@ -126,6 +149,22 @@ function ConfirmOrder() {
     });
   };
 
+  const placeOrder = async () => {
+    try {
+      const { data } = await axios.post(
+        "/orders",
+        {
+          orderItems: state.cart.cartItems,
+          shippingAddress: state4.shippingInfo,
+          paymentMethod: state5.paymentInfo,
+          productPrice: totalPrice,
+          taxPrice: tax,
+          totalPrice: totalPrice + tax + shipping,
+        },
+        { header: { Authorization: "Bearer " + state3.userInfo.token } }
+      );
+    } catch (error) {}
+  };
   return (
     <>
       <Helmet>
@@ -136,7 +175,13 @@ function ConfirmOrder() {
         payment={false}
         confirm={true}
       ></ConfirmationSteps>
+
       <Container>
+        <div className="w-100 d-flex justify-content-center">
+          <Button variant="success w-50 my-2" onClick={placeOrder}>
+            Confirm Order
+          </Button>
+        </div>
         <Row>
           <Col>
             {" "}
@@ -434,20 +479,17 @@ function ConfirmOrder() {
                 {discount ? (
                   <>
                     {" "}
-                    <del>
-                      {state.cart.cartItems.reduce(
-                        (acc, cur) => acc + cur.quantity * cur.price,
-                        0
-                      )}
-                    </del>
+                    <del>{totalPrice}</del>
                     <span> {discount}</span>
                   </>
                 ) : (
-                  state.cart.cartItems.reduce(
-                    (acc, cur) => acc + cur.quantity * cur.price,
-                    0
-                  )
+                  totalPrice
                 )}
+              </ListGroup.Item>
+              <ListGroup.Item>Shipping: $0</ListGroup.Item>
+              <ListGroup.Item>tax: $ {tax}</ListGroup.Item>
+              <ListGroup.Item>
+                total: $ {totalPrice + tax + shipping}
               </ListGroup.Item>
             </ListGroup>
           </Col>
