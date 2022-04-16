@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet-async";
 import { useStore } from "../Store";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import ProductModal from "../components/ProductModal";
-import ReactCardFlip from "react-card-flip";
+
 const initialState = {
   loading: false,
   products: [],

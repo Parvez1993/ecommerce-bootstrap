@@ -28,6 +28,7 @@ function ConfirmOrder() {
     dispatch,
     discount,
     state3,
+    dispatch6,
   } = useStore();
 
   const navigate = useNavigate();
@@ -44,11 +45,6 @@ function ConfirmOrder() {
     : totalPrice <= 500
     ? 0
     : (totalPrice * 5) / 100;
-
-  console.log(totalPrice);
-  if (!state4.shippingInfo && !state5.paymentInfo) {
-    navigate("/cart");
-  }
 
   //Modal for shipping/////////////////////////
   const [show, setShow] = useState(false);
@@ -149,21 +145,35 @@ function ConfirmOrder() {
     });
   };
 
+  /////////////////////////////////////////place order//////////////////////////////////////////
+
   const placeOrder = async () => {
     try {
+      dispatch6({ type: "CREATE_REQUEST" });
       const { data } = await axios.post(
         "/orders",
         {
           orderItems: state.cart.cartItems,
           shippingAddress: state4.shippingInfo,
           paymentMethod: state5.paymentInfo,
-          productPrice: totalPrice,
+          itemsPrice: totalPrice,
+          shippingPrice: shipping,
           taxPrice: tax,
           totalPrice: totalPrice + tax + shipping,
         },
-        { header: { Authorization: "Bearer " + state3.userInfo.token } }
+        { headers: { Authorization: "Bearer " + state3.userInfo.token } }
       );
-    } catch (error) {}
+
+      console.log(data);
+
+      // dispatch({ type: "CLEAR_CART" });
+      dispatch6({ type: "CREATE_SUCCESS" });
+      localStorage.removeItem("cartItems");
+      navigate(`/order/${data.order._id}`);
+    } catch (err) {
+      dispatch6({ type: "CREATE_FAIL" });
+      toast.error(err);
+    }
   };
   return (
     <>

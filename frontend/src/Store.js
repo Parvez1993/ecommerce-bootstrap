@@ -51,6 +51,15 @@ function reducer(state, action) {
         },
       };
 
+    case "CLEAR_CART":
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          cartItems: [],
+        },
+      };
+
     default:
       return state;
   }
@@ -283,7 +292,7 @@ const reducer6 = (state, action) => {
 
 const orderIntialState = {
   loading: false,
-  order: true,
+  order: "",
   error: "",
 };
 
@@ -327,6 +336,8 @@ export const StoreProvider = ({ children }) => {
     setDiscount,
     state6,
     dispatch6,
+    state7,
+    dispatch7,
   };
   return (
     <StoreContext.Provider value={value}>{children}</StoreContext.Provider>

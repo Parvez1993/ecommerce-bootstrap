@@ -9,10 +9,12 @@ dotenv.config();
 const loadProductsRoutes = require("./routes/LoadProductsRoutes");
 const productRouter = require("./routes/ProductRoutes");
 const userRouter = require("./routes/AuthRoutes");
+const orderRouter = require("./routes/OrderRoutes.js");
 const morgan = require("morgan");
 const notFoundMiddleware = require("./middleware/notFoundMiddleware.js");
 const errorMiddleware = require("./middleware/error-handler.js");
 
+const auth = require("./middleware/auth.js");
 const app = express();
 
 if (process.env.NODE_ENV !== "production") {
@@ -37,6 +39,7 @@ app.use("/products", productRouter);
 
 app.use("/users", userRouter);
 
+app.use("/orders", auth, orderRouter);
 // app.get("/products/:slug", function (req, res) {
 //   let product = data.find((item) => item.slug === req.params.slug);
 //   res.send(product);

@@ -155,7 +155,7 @@ function App() {
           <Route path="/shipping" element={<Shipping />}></Route>
           <Route path="/payment" element={<Payment />}></Route>
           <Route path="/confirm" element={<ConfirmOrder />}></Route>
-          <Route path="/orders/:id" element={<Order />}></Route>
+          <Route path="/order/:id" element={<Order />}></Route>
         </Routes>
       </BrowserRouter>
     </>
