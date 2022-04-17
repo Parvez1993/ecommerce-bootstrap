@@ -69,6 +69,10 @@ app.get("/category/:cat", function (req, res) {
   res.send(product);
 });
 
+app.get("/keys/paypal", (req, res) => {
+  res.send(process.env.PAYPAL_CLIENT || "sb");
+});
+
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 

@@ -294,6 +294,8 @@ const orderIntialState = {
   loading: false,
   order: "",
   error: "",
+  successPay: false,
+  loadingPay: false,
 };
 
 const reducer7 = (state, action) => {
@@ -304,6 +306,14 @@ const reducer7 = (state, action) => {
       return { ...state, loading: false, order: action.payload, error: "" };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
+    case "PAYPAL_REQUEST":
+      return { ...state, loadingPay: true };
+    case "PAYPAL_SUCCESS":
+      return { ...state, loadingPay: false };
+    case "PAYPAL_FAIL":
+      return { ...state, loadingPay: false, errorPay: action.payload };
+    case "PAYPAL_RESET":
+      return { ...state, loadingPay: false, successPay: false };
     default:
       return state;
   }
@@ -336,8 +346,6 @@ export const StoreProvider = ({ children }) => {
     setDiscount,
     state6,
     dispatch6,
-    state7,
-    dispatch7,
   };
   return (
     <StoreContext.Provider value={value}>{children}</StoreContext.Provider>

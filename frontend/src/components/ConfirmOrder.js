@@ -130,6 +130,8 @@ function ConfirmOrder() {
     }
   };
 
+  console.log("wtf", state3.userInfo);
+
   ///////////////////////////////////////////////////////////cart sumary/////////////////////////////////////
   const updateQuantity = (item, quantity) => {
     dispatch({

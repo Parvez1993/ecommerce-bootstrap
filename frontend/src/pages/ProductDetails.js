@@ -83,24 +83,24 @@ function ProductDetails() {
 
   //get all the products
 
-  useEffect(() => {
-    const getProducts = async () => {
-      setLoader(true);
-      try {
-        const { data } = await axios.get("/products");
-        let tempRelatedProduct = data.filter(
-          (item) =>
-            item.category === product.category && item.name !== product.name
-        );
-        setRelatedProducts(tempRelatedProduct);
-        setLoader(false);
-      } catch (error) {
-        setLoader(false);
-      }
-    };
+  // useEffect(() => {
+  //   const getProducts = async () => {
+  //     setLoader(true);
+  //     try {
+  //       const { data } = await axios.get("/products");
+  //       let tempRelatedProduct = data.filter(
+  //         (item) =>
+  //           item.category === product.category && item.name !== product.name
+  //       );
+  //       setRelatedProducts(tempRelatedProduct);
+  //       setLoader(false);
+  //     } catch (error) {
+  //       setLoader(false);
+  //     }
+  //   };
 
-    getProducts();
-  }, [product.category, product.name]);
+  //   getProducts();
+  // }, [product.category, product.name]);
 
   const handleAddtoCart = async () => {
     const existingItem = cart.cartItems.find(
