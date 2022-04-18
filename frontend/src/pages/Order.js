@@ -4,7 +4,8 @@ import { useStore } from "../Store";
 import { Col, Container, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import axios from "axios";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import StripeCheckout from "react-stripe-checkout";
 function Order() {
   //reducers
 
@@ -43,14 +44,12 @@ function Order() {
 
   const { state3 } = useStore();
 
-  // console.log(state3.userInfo.data.user._id);
+  console.log("nooooo", state3.userInfo.token);
 
   // paypal step 1
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
   let [fetchedOrder, setFetchedOrder] = useState("");
-
-  console.log(order);
 
   const getOrder = async () => {
     try {
@@ -79,14 +78,14 @@ function Order() {
       const loadPayPalScript = async () => {
         const { data } = await axios.get("/keys/paypal", {
           headers: {
-            authorization: `Bearer ${state3.userInfo.data.user._id}`,
+            authorization: `Bearer ${state3.userInfo.token}`,
           },
         });
 
         paypalDispatch({
           type: "resetOptions",
           value: {
-            "client-id": "test",
+            "client-id": data,
             currency: "USD",
           },
         });
@@ -100,7 +99,7 @@ function Order() {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, paypalDispatch, successPay, state3.userInfo]);
+  }, [order._id, paypalDispatch, successPay, state3.userInfo]);
 
   const createOrder = (data, actions) => {
     return actions.order
@@ -114,26 +113,29 @@ function Order() {
           },
         ],
       })
-      .then((id) => {
-        console.log(id);
-        return id;
+      .then((orderID) => {
+        console.log(orderID);
+        return orderID;
       });
   };
 
+  console.log("order", order);
+
   const onApprove = (data, actions) => {
     return actions.order.capture().then(async (details) => {
+      console.log("detaaaiils", details);
       try {
         dispatch7({ type: "PAYPAL_REQUEST" });
-        const { data } = await axios.put(
-          `/api/orders/${order._id}/pay`,
-          details,
-          {
-            authorization: `Bearer ${state3.userInfo.data.user._id}`,
-          }
-        );
 
-        toast.success("order is paid");
-        dispatch7({ type: "PAYPAL_SUCCESS" });
+        const { data } = await axios.put(`/orders/${order._id}/pay`, details, {
+          headers: {
+            authorization: `Bearer ${state3.userInfo.token}`,
+          },
+        });
+
+        toast("Congrats buddy lets celebrate");
+
+        dispatch7({ type: "PAYPAL_SUCCESS", payload: data });
       } catch (error) {
         dispatch7({ type: "PAYPAL_FAIL", payload: error.message });
         toast.error(error.message);
@@ -145,11 +147,40 @@ function Order() {
     toast.error(err.message);
   };
 
+  //stripe payment
+
+  const handleToken = async (token) => {
+    try {
+      dispatch7({ type: "FETCH_REQUEST" });
+      const { data } = await axios.get(`/orders/${id}`, {
+        headers: { Authorization: "Bearer " + state3.userInfo.token },
+      });
+
+      setFetchedOrder(data.order);
+      dispatch7({ type: "FETCH_SUCCESS", payload: data.order });
+      onApprove();
+    } catch (error) {
+      dispatch7({ type: "FETCH_SUCCESS", payload: error });
+    }
+  };
+
   return (
     <>
+      <h6>{order.paymentMethod}</h6>
       {fetchedOrder ? (
         <div>
           <Container>
+            <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
             <Row className="my-5">
               <Col lg={6}>
                 <ListGroup>
@@ -223,12 +254,22 @@ function Order() {
                 <ListGroup>
                   {!fetchedOrder.isPaid && isPending ? (
                     <h4>Loading</h4>
-                  ) : (
+                  ) : order.paymentMethod === "paypal" ? (
                     <PayPalButtons
                       createOrder={createOrder}
                       onApprove={onApprove}
                       onError={onError}
                     />
+                  ) : order.paymentMethod === "strip" ? (
+                    <StripeCheckout
+                      stripeKey={process.env.REACT_APP_STIPE_KEY}
+                      panelLabel="Send Money"
+                      currency="USD"
+                      amount={order.totalPrice}
+                      token={handleToken}
+                    ></StripeCheckout>
+                  ) : (
+                    ""
                   )}
                 </ListGroup>
               </Col>

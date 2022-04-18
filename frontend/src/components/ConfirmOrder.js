@@ -147,6 +147,8 @@ function ConfirmOrder() {
     });
   };
 
+  console.log(state3.userInfo);
+
   /////////////////////////////////////////place order//////////////////////////////////////////
 
   const placeOrder = async () => {
