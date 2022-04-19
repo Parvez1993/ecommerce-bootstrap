@@ -67,14 +67,12 @@ function Order() {
 
   useEffect(() => {
     if (!order._id || (order._id && order._id !== id)) {
-      console.log("ami ekhane");
       getOrder();
 
       if (successPay) {
         dispatch7({ type: "PAY_RESET" });
       }
     } else {
-      console.log("ami okhane");
       const loadPayPalScript = async () => {
         const { data } = await axios.get("/keys/paypal", {
           headers: {
@@ -119,8 +117,6 @@ function Order() {
       });
   };
 
-  console.log("order", order);
-
   const onApprove = (data, actions) => {
     return actions.order.capture().then(async (details) => {
       console.log("detaaaiils", details);
@@ -147,7 +143,33 @@ function Order() {
     toast.error(err.message);
   };
 
+  console.log("order", order);
   //stripe payment
+
+  const stripepayment = async (token) => {
+    try {
+      dispatch7({ type: "PAYPAL_REQUEST" });
+      const { data } = await axios.put(
+        `/orders/${order._id}/payment`,
+        {
+          order: order,
+          token: token,
+          amount: order.totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state3.userInfo.token}`,
+          },
+        }
+      );
+      console.log(data);
+      toast("Congrats buddy lets celebrate");
+      dispatch7({ type: "PAYPAL_SUCCESS", payload: data });
+    } catch (error) {
+      dispatch7({ type: "PAYPAL_FAIL", payload: error.message });
+      toast.error(error.message);
+    }
+  };
 
   const handleToken = async (token) => {
     try {
@@ -158,7 +180,7 @@ function Order() {
 
       setFetchedOrder(data.order);
       dispatch7({ type: "FETCH_SUCCESS", payload: data.order });
-      onApprove();
+      stripepayment(token);
     } catch (error) {
       dispatch7({ type: "FETCH_SUCCESS", payload: error });
     }
