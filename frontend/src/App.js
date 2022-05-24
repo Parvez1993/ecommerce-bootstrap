@@ -19,6 +19,7 @@ import Shipping from "./pages/Shipping";
 import Payment from "./pages/Payment";
 import ConfirmOrder from "./components/ConfirmOrder";
 import Order from "./pages/Order";
+import History from "./pages/History";
 const Product = React.lazy(() => import("./pages/Product"));
 function App() {
   const [show, setShow] = useState(false);
@@ -156,6 +157,7 @@ function App() {
           <Route path="/payment" element={<Payment />}></Route>
           <Route path="/confirm" element={<ConfirmOrder />}></Route>
           <Route path="/order/:id" element={<Order />}></Route>
+          <Route path="/history" element={<History />}></Route>
         </Routes>
       </BrowserRouter>
     </>

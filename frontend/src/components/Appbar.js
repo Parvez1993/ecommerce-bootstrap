@@ -162,6 +162,14 @@ function Appbar() {
                 </Badge>
               </div>
             </div>
+
+            {state3.userInfo !== null ? (
+              <Nav.Link href="/history" className="text-white">
+                History
+              </Nav.Link>
+            ) : (
+              ""
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

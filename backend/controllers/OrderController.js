@@ -83,7 +83,6 @@ const StripePayment = async (req, res) => {
     }
   );
 
-  console.log(charge);
   if (!charge) {
     throw new NotFoundError("message not found");
   }
@@ -104,9 +103,20 @@ const StripePayment = async (req, res) => {
   }
 };
 
+const getOrderofUser = async (req, res) => {
+  const order = await Order.find({ user: req.user.userId });
+
+  if (order) {
+    res.status(StatusCodes.OK).json({ order });
+  } else {
+    throw new NotFoundError("No such order exists");
+  }
+};
+
 module.exports = {
   getOrder,
   getOrderbyId,
   getOrderAfterPayment,
   StripePayment,
+  getOrderofUser,
 };
