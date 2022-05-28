@@ -63,6 +63,9 @@ function Appbar() {
             <Nav.Link href="/compare" className="text-white">
               Compare
             </Nav.Link>
+            <Nav.Link href="/vendor" className="text-white">
+              Become a vendor
+            </Nav.Link>
             {/* //cart */}
             <div className="d-flex">
               <NavDropdown

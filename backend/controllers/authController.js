@@ -69,3 +69,11 @@ exports.login = async (req, res, next) => {
 
   createSendToken(user, StatusCodes.CREATED, req, res);
 };
+
+exports.editVendor = async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.user.userId, {
+    isVendor: true,
+  });
+
+  res.send(user);
+};
