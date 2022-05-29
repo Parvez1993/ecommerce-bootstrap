@@ -14,6 +14,11 @@ import { useStore } from "../Store";
 function Appbar() {
   const { state, dispatch, state2, state3, dispatch3 } = useStore();
 
+  console.log("this", state3);
+  const { success, userInfo } = state3;
+
+  console.log(userInfo);
+
   const updateQuantity = (item, quantity) => {
     dispatch({
       type: "CART_ADD_ITEM",
@@ -28,7 +33,7 @@ function Appbar() {
     });
   };
 
-  console.log(state.cart);
+  console.log(state3);
 
   const handleLogout = () => {
     dispatch3({
@@ -36,8 +41,6 @@ function Appbar() {
     });
     localStorage.setItem("userInfo", null);
   };
-
-  console.log("this", state3.userInfo);
 
   return (
     <Navbar bg="dark" expand="lg" className="text-white">
@@ -52,9 +55,34 @@ function Appbar() {
               Products
             </Nav.Link>
             {state3.userInfo !== null ? (
-              <Nav.Link className="text-white" onClick={handleLogout}>
-                Logout
-              </Nav.Link>
+              <>
+                <Nav.Link className="text-white" onClick={handleLogout}>
+                  Logout
+                </Nav.Link>
+                <NavDropdown
+                  title={
+                    <span className="text-white my-auto">{userInfo.name}</span>
+                  }
+                  id="basic-nav-dropdown dropdownFix"
+                  style={{ color: "white" }}
+                >
+                  <NavDropdown.Item href="/vendor">
+                    {" "}
+                    Become a vendor
+                  </NavDropdown.Item>
+                  {userInfo !== null ? (
+                    <NavDropdown.Item href="/history">History</NavDropdown.Item>
+                  ) : (
+                    ""
+                  )}
+
+                  {/* {userInfo.isAdmin !== null ? (
+                    <NavDropdown.Item href="/history">History</NavDropdown.Item>
+                  ) : (
+                    ""
+                  )} */}
+                </NavDropdown>
+              </>
             ) : (
               <Nav.Link href="/login" className="text-white">
                 Login
@@ -62,9 +90,6 @@ function Appbar() {
             )}
             <Nav.Link href="/compare" className="text-white">
               Compare
-            </Nav.Link>
-            <Nav.Link href="/vendor" className="text-white">
-              Become a vendor
             </Nav.Link>
             {/* //cart */}
             <div className="d-flex">
@@ -166,7 +191,7 @@ function Appbar() {
               </div>
             </div>
 
-            {state3.userInfo !== null ? (
+            {userInfo !== null ? (
               <Nav.Link href="/history" className="text-white">
                 History
               </Nav.Link>

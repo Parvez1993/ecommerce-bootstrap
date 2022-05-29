@@ -92,3 +92,9 @@ li:before {
   content: counters(item, ".") "    ";
   counter-increment: item;
 }
+
+/* //dropdown fix */
+
+.dropdown-menu[data-bs-popper] {
+  left: -30px !important;
+}

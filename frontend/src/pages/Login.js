@@ -39,16 +39,17 @@ function Login() {
           password,
         });
 
+        console.log("data", data);
         dispatch3({
           type: "LOGIN_SUCCESS",
-          payload: { email, password },
+          payload: data,
         });
 
         localStorage.setItem("userInfo", JSON.stringify(data));
 
-        if (data) {
-          navigate(`/${redirect}`);
-        }
+        // if (data) {
+        //   navigate(`/${redirect}`);
+        // }
       } catch (error) {
         dispatch3({
           type: "LOGIN_FAIL",

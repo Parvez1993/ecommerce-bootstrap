@@ -129,6 +129,7 @@ let userInitialState = {
     : null,
   loading: false,
   error: "",
+  success: false,
 };
 function reducer3(state, action) {
   switch (action.type) {
@@ -149,6 +150,7 @@ function reducer3(state, action) {
         loading: false,
         error: "",
         userInfo: userInfo,
+        success: true,
       };
 
     case "LOGIN_FAIL":
