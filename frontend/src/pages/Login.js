@@ -12,9 +12,6 @@ function Login() {
   console.log(redirectURL);
   const { state3, dispatch3 } = useStore();
 
-  console.log(state3);
-  console.log(redirectURL);
-
   let redirect = redirectURL ? redirectURL : "";
 
   // console.log(redirect);
@@ -47,9 +44,9 @@ function Login() {
 
         localStorage.setItem("userInfo", JSON.stringify(data));
 
-        // if (data) {
-        //   navigate(`/${redirect}`);
-        // }
+        if (data) {
+          navigate(`/${redirect}`);
+        }
       } catch (error) {
         dispatch3({
           type: "LOGIN_FAIL",

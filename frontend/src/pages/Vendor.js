@@ -187,7 +187,7 @@ function Vendor() {
       </div>
 
       {userInfo ? (
-        userInfo.data.user.isVendor ? (
+        userInfo.user.isVendor ? (
           <h5 className="text-center">You are already a member</h5>
         ) : (
           <div className="d-flex justify-content-center">
