@@ -35,9 +35,11 @@ const ProductSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
+      default: 0,
     },
     numberofrating: {
       type: Number,
+      default: 0,
     },
     coupon: {
       type: String,
@@ -50,6 +52,7 @@ const ProductSchema = new mongoose.Schema(
     },
     totalSale: {
       type: Number,
+      default: 0,
     },
     storename: {
       type: mongoose.Schema.Types.ObjectId,

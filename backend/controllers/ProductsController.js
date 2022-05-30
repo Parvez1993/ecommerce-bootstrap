@@ -13,4 +13,21 @@ const getSingleProducts = async (req, res) => {
   res.send(product);
 };
 
-module.exports = { getProducts, getSingleProducts };
+const uploadProduct = async (req, res) => {
+  const product = await Product.create({
+    name: req.body.name,
+    slug: req.body.slug,
+    img: req.body.img,
+    category: req.body.category,
+    description: req.body.description,
+    price: req.body.price,
+    instock: req.body.instock,
+    discount: req.body.discount,
+    discountlimit: req.body.discountlimit,
+    storename: req.body.storename,
+    owner: req.user.userId,
+  });
+  res.send(product);
+};
+
+module.exports = { getProducts, getSingleProducts, uploadProduct };

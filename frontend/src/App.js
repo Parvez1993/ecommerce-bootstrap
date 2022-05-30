@@ -52,7 +52,7 @@ function App() {
           <Offcanvas.Title>Cart</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Table striped bordered hover className="w-25">
+          <Table striped bordered hover style={{ overflowX: "scroll" }}>
             <thead>
               <tr>
                 <th>#</th>
@@ -64,11 +64,11 @@ function App() {
                 <th>Remove</th>
               </tr>
             </thead>
-            {state.cart.cartItems.map((item) => {
+            {state.cart.cartItems.map((item, k) => {
               return (
                 <>
                   <tr>
-                    <td>{item._id}</td>
+                    <td>{k + 1}</td>
                     <td>{item.name}</td>
                     <td>
                       <img

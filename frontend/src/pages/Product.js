@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet-async";
 import { useStore } from "../Store";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import ProductModal from "../components/ProductModal";
+import InnerHTML from "dangerously-set-html-content";
 
 const initialState = {
   loading: false,
@@ -85,6 +86,8 @@ function Product() {
     });
   };
 
+  console.log("products", products);
+
   //handleWishList
   const handleWishList = (product) => {
     dispatch2({
@@ -132,9 +135,15 @@ function Product() {
                           numberOfRatings={numberOfRatings}
                         ></Ratings>
                       </div>
-                      <p className="small text-muted font-italic">
+                      {/* <p className="small text-muted font-italic">
                         {description}
-                      </p>
+                      </p> */}
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: description,
+                        }}
+                      ></div>
+
                       <h4 className="small text-muted font-bold">${price}</h4>
                     </div>
                     <div className="d-flex justify-content-around align-items-center w-100">

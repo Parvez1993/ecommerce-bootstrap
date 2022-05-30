@@ -57,6 +57,10 @@ function ProductDetails() {
   );
   const { slug } = useParams();
 
+  const { description } = product;
+
+  console.log(description);
+
   //for related products
   const [productSlug, setProductSlug] = useState("");
   const [lgShow, setLgShow] = useState(false);
@@ -188,7 +192,11 @@ function ProductDetails() {
                     ratings={product.ratings}
                     numberOfRatings={product.numberOfRatings}
                   ></Ratings>
-                  <p>Description: {product.description}</p>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: description,
+                    }}
+                  ></div>
                 </div>
               </Col>
               <Col lg={3}>
@@ -285,9 +293,11 @@ function ProductDetails() {
                               numberOfRatings={item.numberOfRatings}
                             ></Ratings>
                           </div>
-                          <p className="small text-muted font-italic">
-                            {item.description}
-                          </p>
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: description,
+                            }}
+                          ></div>
                           <h4 className="small text-muted font-bold">
                             ${item.price}
                           </h4>

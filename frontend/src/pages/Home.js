@@ -238,9 +238,11 @@ function Home() {
                             numberOfRatings={numberOfRatings}
                           ></Ratings>
                         </div>
-                        <p className="small text-muted font-italic">
-                          {description}
-                        </p>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: description,
+                          }}
+                        ></div>
                         <h4 className="small text-muted font-bold">${price}</h4>
                       </div>
                     </div>
