@@ -50,6 +50,7 @@ function Dashboard() {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   //edit details
+  const [editId, setEditId] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,7 +111,7 @@ function Dashboard() {
     }
 
     Store();
-  }, []);
+  }, [editId]);
 
   console.log(
     productname,
@@ -333,6 +334,7 @@ function Dashboard() {
                             <th scope="col">Category</th>
                             <th scope="col">Description</th>
                             <th scope="col">Price</th>
+                            <th scope="col">Coupon</th>
                             <th scope="col">Discount</th>
                             <th scope="col">Discout Limit</th>
                           </tr>
@@ -351,13 +353,20 @@ function Dashboard() {
                               ></div>
                             </th>
                             <th scope="col">{i.price}</th>
+                            <th scope="col">{i.coupon ? i.coupon : "none"}</th>
                             <th scope="col">{i.discount}</th>
                             <th scope="col">{i.discountlimit}</th>
                             <th scope="col">
                               <Badge bg="danger">Delete</Badge>
                             </th>
                             <th scope="col">
-                              <Badge bg="danger" onClick={handleShow}>
+                              <Badge
+                                bg="danger"
+                                onClick={() => {
+                                  handleShow();
+                                  setEditId(i._id);
+                                }}
+                              >
                                 Edit
                               </Badge>
                             </th>
@@ -371,7 +380,12 @@ function Dashboard() {
           )}
         </Col>
       </Row>
-      <EdirtProductModal show={show} handleClose={handleClose} />
+      <EdirtProductModal
+        show={show}
+        handleClose={handleClose}
+        token={state3.userInfo.token}
+        id={editId}
+      />
     </>
   );
 }

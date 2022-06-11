@@ -39,7 +39,15 @@ const getOwnerProduct = async (req, res) => {
 };
 
 const getEditProducts = async (req, res) => {
-  const productfromUser = await Product.find({ product: req.params.id });
+  const productfromUser = await Product.find({ _id: req.params.id });
+
+  if (productfromUser) {
+    res.status(200).send(productfromUser);
+  }
+};
+
+const ownereditProduct = async (req, res) => {
+  const productfromUser = await Product.find({ _id: req.params.id });
 
   if (productfromUser) {
     res.status(200).send(productfromUser);
@@ -51,4 +59,5 @@ module.exports = {
   getSingleProducts,
   uploadProduct,
   getOwnerProduct,
+  getEditProducts,
 };

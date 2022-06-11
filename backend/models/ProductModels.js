@@ -43,6 +43,7 @@ const ProductSchema = new mongoose.Schema(
     },
     coupon: {
       type: String,
+      default: null,
     },
     discount: {
       type: Number,
