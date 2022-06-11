@@ -1,5 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Row, Col, Nav, Form, Button, Alert } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Nav,
+  Form,
+  Button,
+  Alert,
+  Table,
+  Badge,
+} from "react-bootstrap";
 import { useStore } from "../Store";
 import axios from "axios";
 import { Editor } from "react-draft-wysiwyg";
@@ -7,12 +16,20 @@ import { EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
+import EdirtProductModal from "../components/EdirtProductModal";
 function Dashboard() {
+  //create Modals
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const { state3 } = useStore();
   let [storename, setStorename] = useState("");
   let [category, setCategory] = useState(true);
   let [name, setName] = useState("");
   let [pro, setPro] = useState(false);
+  let [productlist, setproductList] = useState("false");
   let [alert, setAlert] = useState("");
   //text
 
@@ -28,9 +45,11 @@ function Dashboard() {
   let [coupon, setCoupon] = useState("");
   let [discount, setDiscount] = useState("");
   let [discountLimit, setDiscountLimit] = useState("");
-
+  let [ownerProducts, setOwnerProducts] = useState("");
   //rich text editor
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  //edit details
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +68,7 @@ function Dashboard() {
     setAlert("");
   };
 
-  //useEffect
+  //useEffect to get store
   useEffect(() => {
     async function Store() {
       let { data } = await axios.get(`/store`, {
@@ -64,6 +83,29 @@ function Dashboard() {
         setAlert("Please create a store first");
         setCategory(true);
         setPro(false);
+        setproductList(false);
+      }
+    }
+
+    Store();
+  }, []);
+
+  //useEffect to get ownerProducts
+  useEffect(() => {
+    async function Store() {
+      let { data } = await axios.get(`/products/getownerproduct`, {
+        headers: {
+          authorization: `Bearer ${state3.userInfo.token}`,
+        },
+      });
+
+      if (data.length > 0) {
+        setOwnerProducts(data);
+      } else {
+        setAlert("No product List");
+        setCategory(false);
+        setPro(false);
+        setproductList(true);
       }
     }
 
@@ -119,6 +161,7 @@ function Dashboard() {
               onClick={() => {
                 setCategory(false);
                 setPro(true);
+                setproductList(false);
               }}
             >
               Create Product
@@ -127,11 +170,20 @@ function Dashboard() {
               onClick={() => {
                 setCategory(true);
                 setPro(false);
+                setproductList(false);
               }}
             >
               Create Store
             </Nav.Link>
-            <Nav.Link>Create Subcategory</Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                setCategory(false);
+                setPro(false);
+                setproductList(true);
+              }}
+            >
+              Product List
+            </Nav.Link>
             <Nav.Link>Payment</Nav.Link>
           </Nav>
         </Col>
@@ -267,8 +319,59 @@ function Dashboard() {
               </Button>
             </Form>
           )}
+          {productlist && !alert && (
+            <>
+              {ownerProducts
+                ? ownerProducts.map((i, k) => {
+                    const { description } = i;
+                    return (
+                      <Table>
+                        <thead>
+                          <tr>
+                            <th scope="col">S.No</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Discount</th>
+                            <th scope="col">Discout Limit</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="col">{k + 1}</th>
+                            <th scope="col">{i.name}</th>
+                            <th scope="col">{i.category}</th>
+                            <th scope="col">
+                              {" "}
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: description,
+                                }}
+                              ></div>
+                            </th>
+                            <th scope="col">{i.price}</th>
+                            <th scope="col">{i.discount}</th>
+                            <th scope="col">{i.discountlimit}</th>
+                            <th scope="col">
+                              <Badge bg="danger">Delete</Badge>
+                            </th>
+                            <th scope="col">
+                              <Badge bg="danger" onClick={handleShow}>
+                                Edit
+                              </Badge>
+                            </th>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    );
+                  })
+                : ""}
+            </>
+          )}
         </Col>
       </Row>
+      <EdirtProductModal show={show} handleClose={handleClose} />
     </>
   );
 }
