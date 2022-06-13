@@ -81,6 +81,14 @@ function Appbar() {
                       ""
                     )}
 
+                    {userInfo !== null ? (
+                      <NavDropdown.Item href="/vcard">
+                        Get your Virtual Card
+                      </NavDropdown.Item>
+                    ) : (
+                      ""
+                    )}
+
                     {/* {userInfo.isAdmin !== null ? (
                     <NavDropdown.Item href="/history">History</NavDropdown.Item>
                   ) : (

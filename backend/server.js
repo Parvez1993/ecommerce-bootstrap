@@ -15,6 +15,7 @@ const notFoundMiddleware = require("./middleware/notFoundMiddleware.js");
 const errorMiddleware = require("./middleware/error-handler.js");
 
 const auth = require("./middleware/auth.js");
+const virtualCart = require("./routes/VirtualRoutes.js");
 
 const app = express();
 
@@ -43,6 +44,8 @@ app.use("/users", userRouter);
 app.use("/orders", auth, orderRouter);
 
 app.use("/store", auth, storeRouter);
+
+app.use("/vpayment", auth, virtualCart);
 
 app.get("/cartItems/:id", function (req, res) {
   const params = req.params.id;

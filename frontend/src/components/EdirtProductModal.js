@@ -17,9 +17,54 @@ const EdirtProductModal = ({ show, handleClose, token, id }) => {
   let [discount, setDiscount] = useState("");
   let [discountLimit, setDiscountLimit] = useState("");
   let [loading, setLoading] = useState(true);
+  let [editSuccess, setEditSuccess] = useState(false);
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
+  const handleSubmit = async () => {
+    let { data } = await axios.post(
+      `/products/editownerproduct/${id}`,
+      {
+        name: productname,
+        price,
+        category: cat,
+        instock: stock,
+        description: text,
+        coupon: coupon,
+        discount: discount,
+        discountlimit: discountLimit,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (data) {
+      setProductname("");
+      setCat("");
+      setText("");
+      setEditorState(
+        EditorState.createWithContent(
+          ContentState.createFromBlockArray(convertFromHTML(text))
+        )
+      );
+      setPrice("");
+      setStock("");
+      setCoupon("");
+      setDiscount("");
+      setDiscountLimit("");
+      setEditSuccess(true);
+      handleClose();
+    }
+  };
+
+  useEffect(() => {
+    if (editSuccess) {
+      setEditSuccess(false);
+    }
+  }, [editSuccess]);
   useEffect(() => {
     if (show) {
       async function Store() {
@@ -30,7 +75,6 @@ const EdirtProductModal = ({ show, handleClose, token, id }) => {
         });
 
         if (data) {
-          console.log("data", data);
           setProductname(data[0].name);
           setCat(data[0].category);
           setText(data[0].description);
@@ -143,7 +187,7 @@ const EdirtProductModal = ({ show, handleClose, token, id }) => {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" onClick={handleSubmit}>
               Submit Product
             </Button>
           </Form>
@@ -152,9 +196,6 @@ const EdirtProductModal = ({ show, handleClose, token, id }) => {
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           Close
-        </Button>
-        <Button variant="primary" onClick={handleClose}>
-          Save Changes
         </Button>
       </Modal.Footer>
     </Modal>

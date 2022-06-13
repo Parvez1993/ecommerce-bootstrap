@@ -22,6 +22,7 @@ import Order from "./pages/Order";
 import History from "./pages/History";
 import Vendor from "./pages/Vendor";
 import Dashboard from "./pages/Dashboard";
+import VirtualCard from "./pages/VirtualCard";
 const Product = React.lazy(() => import("./pages/Product"));
 function App() {
   const [show, setShow] = useState(false);
@@ -162,6 +163,7 @@ function App() {
           <Route path="/history" element={<History />}></Route>
           <Route path="/vendor" element={<Vendor />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/vcard" element={<VirtualCard />}></Route>
         </Routes>
       </BrowserRouter>
     </>

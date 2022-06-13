@@ -1,4 +1,5 @@
 const Product = require("../models/ProductModels.js");
+const NotFoundError = require("../errors/not-found.js");
 
 const getProducts = async (req, res) => {
   const products = await Product.find();
@@ -47,10 +48,24 @@ const getEditProducts = async (req, res) => {
 };
 
 const ownereditProduct = async (req, res) => {
-  const productfromUser = await Product.find({ _id: req.params.id });
+  const productfromUser = await Product.findById(req.params.id);
 
-  if (productfromUser) {
-    res.status(200).send(productfromUser);
+  if (!productfromUser) {
+    throw new NotFoundError("No product Found");
+  } else {
+    productfromUser.name = req.body.name || productfromUser.name;
+    productfromUser.price = req.body.price || productfromUser.price;
+    productfromUser.category = req.body.category || productfromUser.category;
+    productfromUser.instock = req.body.instock || productfromUser.instock;
+    productfromUser.description =
+      req.body.description || productfromUser.description;
+    productfromUser.coupon = req.body.coupon || productfromUser.coupon;
+    productfromUser.discount = req.body.discount || productfromUser.discount;
+    productfromUser.discountlimit =
+      req.body.discountlimit || productfromUser.discountlimit;
+
+    const saveProduct = await productfromUser.save();
+    res.status(200).json(saveProduct);
   }
 };
 
@@ -60,4 +75,5 @@ module.exports = {
   uploadProduct,
   getOwnerProduct,
   getEditProducts,
+  ownereditProduct,
 };
