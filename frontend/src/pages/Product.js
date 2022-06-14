@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { Button, Container, Spinner } from "react-bootstrap";
+import { Badge, Button, Container, Spinner } from "react-bootstrap";
 import Ratings from "../components/Ratings";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -34,7 +34,7 @@ function reducer(state, action) {
 }
 
 function Product() {
-  const { state, dispatch: ctxDispatch, state2, dispatch2 } = useStore();
+  const { state, dispatch: ctxDispatch, state3, dispatch2 } = useStore();
   const [productSlug, setProductSlug] = useState("");
   const [lgShow, setLgShow] = useState(false);
   const [flipped, setFlipped] = useState(false);
@@ -126,9 +126,32 @@ function Product() {
                         alt={name}
                         className="img-fluid d-block mx-auto mb-3"
                       />
-                      <Link to={`/products/${slug}`}>
-                        <h5>{name}</h5>
-                      </Link>
+                      {state3.userInfo ? (
+                        <Link
+                          to={
+                            state3.userInfo.user.isAffiliate
+                              ? `/products/${item.slug}?name:${state3.userInfo.user.name}`
+                              : `/products/${item.slug}`
+                          }
+                        >
+                          {item.name}{" "}
+                          {item.totalSale > 50 ? (
+                            <Badge bg="warning">Best Seller</Badge>
+                          ) : (
+                            ""
+                          )}
+                        </Link>
+                      ) : (
+                        <Link to={`/products/${item.slug}`}>
+                          {item.name}{" "}
+                          {item.totalSale > 50 ? (
+                            <Badge bg="warning">Best Seller</Badge>
+                          ) : (
+                            ""
+                          )}
+                        </Link>
+                      )}
+
                       <div>
                         <Ratings
                           ratings={ratings}

@@ -7,6 +7,6 @@ const userRouter = express.Router();
 userRouter.route("/register").post(authController.register);
 userRouter.route("/login").post(authController.login);
 userRouter.route("/editvendor").put(auth, authController.editVendor);
-userRouter.route("/editAffiliator").put(auth, authController.editVendor);
+userRouter.route("/editAffiliator").put(auth, authController.editAffiliator);
 
 module.exports = userRouter;

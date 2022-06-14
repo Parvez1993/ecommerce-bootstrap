@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useNavigate } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Container } from "react-bootstrap";
 import axios from "axios";
 import { useStore } from "../Store";
+import { useNavigate } from "react-router-dom";
 
 function Affiliate() {
   const [agree, setAgree] = useState(false);
@@ -19,13 +20,15 @@ function Affiliate() {
           headers: { Authorization: "Bearer " + id },
         }
       );
+      if (data) {
+        setAlert("Successfully an affiliate");
+        setAgree(false);
+        navigate("/affiliatelink");
+      }
     };
 
     if (agree) {
       editVender(state3.userInfo.token);
-      setAlert("Successfully an affiliate");
-      setAgree(false);
-      navigate("/affiliatelink");
     }
   }, [agree]);
   return (

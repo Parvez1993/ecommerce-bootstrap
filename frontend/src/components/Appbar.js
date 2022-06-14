@@ -15,7 +15,6 @@ import { useStore } from "../Store";
 function Appbar() {
   const { state, dispatch, state2, state3, dispatch3 } = useStore();
 
-  console.log("this", state3);
   const { loading, userInfo } = state3;
 
   console.log(userInfo);
@@ -33,8 +32,6 @@ function Appbar() {
       payload: id,
     });
   };
-
-  console.log(state3);
 
   const handleLogout = () => {
     dispatch3({
@@ -98,19 +95,24 @@ function Appbar() {
                     ) : (
                       ""
                     )}
+
                     <NavDropdown.Divider />
-                    {userInfo.isAffiliate ? (
-                      <NavDropdown.Item href="#action/3.3">
-                        <Link className="item" to="/affiliatelink">
-                          Get Affiliat Link
-                        </Link>
-                      </NavDropdown.Item>
+                    {userInfo ? (
+                      userInfo.user.isAffiliate ? (
+                        <NavDropdown.Item href="#action/3.3">
+                          <Link className="item" to="/affiliatelink">
+                            Get Affiliat Link
+                          </Link>
+                        </NavDropdown.Item>
+                      ) : (
+                        <NavDropdown.Item href="#action/3.3">
+                          <Link className="item" to="/affiliate">
+                            Become a Affiliate
+                          </Link>
+                        </NavDropdown.Item>
+                      )
                     ) : (
-                      <NavDropdown.Item href="#action/3.3">
-                        <Link className="item" to="/affiliate">
-                          Become a Affiliate
-                        </Link>
-                      </NavDropdown.Item>
+                      ""
                     )}
                     <NavDropdown.Divider />
                   </NavDropdown>

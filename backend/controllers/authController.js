@@ -77,9 +77,20 @@ exports.editVendor = async (req, res, next) => {
 };
 
 exports.editAffiliator = async (req, res, next) => {
-  const user = await User.findByIdAndUpdate(req.user.userId, {
-    isAffiliate: true,
-  });
+  const user = await User.findByIdAndUpdate(
+    req.user.userId,
+    {
+      isAffiliate: true,
+    },
+    { new: true },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(docs);
+      }
+    }
+  );
 
   res.send(user);
 };
