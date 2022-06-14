@@ -58,7 +58,7 @@ function VirtualCard() {
     return actions.order.capture().then(async (details) => {
       try {
         const { data } = await axios.put(
-          `/vpayment/payment`,
+          `vpayment/payment`,
           details.purchase_units[0],
           {
             headers: {
