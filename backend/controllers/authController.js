@@ -75,3 +75,11 @@ exports.editVendor = async (req, res, next) => {
 
   res.send(user);
 };
+
+exports.editAffiliator = async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.user.userId, {
+    isAffiliate: true,
+  });
+
+  res.send(user);
+};

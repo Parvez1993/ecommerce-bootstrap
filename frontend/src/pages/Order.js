@@ -1,7 +1,14 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useStore } from "../Store";
-import { Col, Container, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  ListGroup,
+  ListGroupItem,
+  Row,
+} from "react-bootstrap";
 import axios from "axios";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { toast, ToastContainer } from "react-toastify";
@@ -43,8 +50,6 @@ function Order() {
   const { id } = useParams();
 
   const { state3 } = useStore();
-
-  console.log("nooooo", state3.userInfo.token);
 
   // paypal step 1
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
@@ -162,7 +167,7 @@ function Order() {
           },
         }
       );
-      console.log(data);
+
       toast("Congrats buddy lets celebrate");
       dispatch7({ type: "PAYPAL_SUCCESS", payload: data });
     } catch (error) {
@@ -186,9 +191,24 @@ function Order() {
     }
   };
 
+  const handleVirtualPayment = async () => {
+    try {
+      const { data } = await axios.put(
+        `/vpayment/payment/${id}`,
+        { price: order.totalPrice },
+        {
+          headers: { Authorization: "Bearer " + state3.userInfo.token },
+        }
+      );
+      if (data) {
+        toast("Congrats buddy lets celebrate");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <>
-      <h6>{order.paymentMethod}</h6>
       {fetchedOrder ? (
         <div>
           <Container>
@@ -290,6 +310,10 @@ function Order() {
                       amount={order.totalPrice}
                       token={handleToken}
                     ></StripeCheckout>
+                  ) : order.paymentMethod === "virtual_card" ? (
+                    <Button variant="success" onClick={handleVirtualPayment}>
+                      Confirm Payment
+                    </Button>
                   ) : (
                     ""
                   )}

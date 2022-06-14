@@ -30,6 +30,7 @@ const UserSchema = new mongoose.Schema({
   },
   isAdmin: { type: Boolean, default: false, required: true },
   isVendor: { type: Boolean, default: false, required: true },
+  isAffiliate: { type: Boolean, default: false, required: true },
 });
 
 UserSchema.pre("save", async function (next) {

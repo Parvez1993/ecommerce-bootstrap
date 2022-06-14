@@ -69,6 +69,16 @@ function Payment() {
                 }
                 onChange={(e) => setPayment(e.target.value)}
               />
+              <Form.Check
+                type="radio"
+                label="virtual card"
+                value="virtual_card"
+                name="payment"
+                defaultChecked={
+                  state5.paymentInfo === "virtual_card" ? "virtual_card" : ""
+                }
+                onChange={(e) => setPayment(e.target.value)}
+              />
               <Button className="w-100 btn-block my-3" onClick={handlePayment}>
                 Continue
               </Button>

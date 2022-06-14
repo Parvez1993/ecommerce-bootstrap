@@ -9,6 +9,7 @@ import {
   Table,
 } from "react-bootstrap";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { useStore } from "../Store";
 
 function Appbar() {
@@ -55,6 +56,7 @@ function Appbar() {
               <Nav.Link href="/products" className="text-white">
                 Products
               </Nav.Link>
+
               {state3.userInfo !== null ? (
                 <>
                   <Nav.Link className="text-white" onClick={handleLogout}>
@@ -89,11 +91,28 @@ function Appbar() {
                       ""
                     )}
 
-                    {/* {userInfo.isAdmin !== null ? (
-                    <NavDropdown.Item href="/history">History</NavDropdown.Item>
-                  ) : (
-                    ""
-                  )} */}
+                    {userInfo.isAdmin !== null ? (
+                      <NavDropdown.Item href="/history">
+                        History
+                      </NavDropdown.Item>
+                    ) : (
+                      ""
+                    )}
+                    <NavDropdown.Divider />
+                    {userInfo.isAffiliate ? (
+                      <NavDropdown.Item href="#action/3.3">
+                        <Link className="item" to="/affiliatelink">
+                          Get Affiliat Link
+                        </Link>
+                      </NavDropdown.Item>
+                    ) : (
+                      <NavDropdown.Item href="#action/3.3">
+                        <Link className="item" to="/affiliate">
+                          Become a Affiliate
+                        </Link>
+                      </NavDropdown.Item>
+                    )}
+                    <NavDropdown.Divider />
                   </NavDropdown>
                 </>
               ) : (
