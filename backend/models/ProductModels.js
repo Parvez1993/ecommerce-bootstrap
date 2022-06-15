@@ -27,14 +27,25 @@ const ProductSchema = new mongoose.Schema(
     },
     price: {
       type: Number,
-      required: true,
     },
     instock: {
       type: Number,
-      required: true,
     },
+    reviews: [
+      {
+        name: { type: String },
+        rating: { type: Number },
+        comment: { type: String },
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        default: {},
+      },
+    ],
     rating: {
       type: Number,
+      required: true,
       default: 0,
     },
     numberofrating: {

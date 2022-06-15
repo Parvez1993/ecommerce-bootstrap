@@ -1,5 +1,6 @@
 const Product = require("../models/ProductModels.js");
 const NotFoundError = require("../errors/not-found.js");
+const User = require("../models/UserModels.js");
 
 const getProducts = async (req, res) => {
   const products = await Product.find();
@@ -69,6 +70,45 @@ const ownereditProduct = async (req, res) => {
   }
 };
 
+const updateReviews = async (req, res) => {
+  const { rating, comment } = req.body;
+
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    const alreadyReviewed = product.reviews.find(
+      (r) => r.user.toString() === req.user.userId.toString()
+    );
+    if (alreadyReviewed) {
+      res.status(400);
+      throw new Error("Product already reviewed");
+    } else {
+      let userdetail = await User.findById(req.user.userId).select("-password");
+
+      const review = {
+        name: userdetail.name,
+        rating: Number(rating),
+        comment,
+        user: req.user.userId,
+      };
+
+      product.reviews.push(review);
+
+      product.numReviews = product.reviews.length;
+
+      product.rating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        product.reviews.length; //5
+
+      await product.save();
+      res.status(201).json({ message: "Review added" });
+    }
+  } else {
+    res.status(404);
+    throw new Error("Product not found");
+  }
+};
+
 module.exports = {
   getProducts,
   getSingleProducts,
@@ -76,4 +116,5 @@ module.exports = {
   getOwnerProduct,
   getEditProducts,
   ownereditProduct,
+  updateReviews,
 };

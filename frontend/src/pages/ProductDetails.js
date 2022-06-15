@@ -6,6 +6,7 @@ import {
   Col,
   Container,
   Form,
+  ListGroup,
   Row,
   Spinner,
   Table,
@@ -39,27 +40,49 @@ function reducer(state, action) {
   }
 }
 
+function reducer2(state, action) {
+  switch (action.type) {
+    case "PRODUCT_CREATE_REVIEW_BEGIN":
+      return { ...state, loading: true };
+    case "PRODUCT_CREATE_REVIEW_SUCCESS":
+      return { ...state, loading: false, success: true };
+    case "PRODUCT_CREATE_REVIEW_FAIL":
+      return { ...state, loading: false, error: action.payload };
+    case "PRODUCT_CREATE_REVIEW_RESET":
+      return {};
+    default:
+      return state;
+  }
+}
+
 function ProductDetails() {
   const [relatedProducts, setRelatedProducts] = useState("");
   const [coupon, setCoupon] = useState("");
   const [loader, setLoader] = useState(false);
-  const { state, dispatch: ctxDispatch } = useStore();
+  const { state, dispatch: ctxDispatch, state3 } = useStore();
   const [alert, setAlert] = useState(false);
   const { cart } = state;
-
-  console.log(cart);
-
+  const [render, setRender] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
   //discounted price
   const [discount, setDiscount] = useState("");
   const [{ product, loading, error }, dispatch] = useReducer(
     reducer,
     initialState
   );
+
+  const [
+    { success: successReview, loading: loadingReview, error: errorReview },
+    dispatch2,
+  ] = useReducer(reducer2, {
+    success: false,
+    loading: false,
+    error: "",
+  });
   const { slug } = useParams();
 
   const { description } = product;
-
-  console.log(description);
 
   //for related products
   const [productSlug, setProductSlug] = useState("");
@@ -70,41 +93,35 @@ function ProductDetails() {
     setProductSlug(path);
   };
 
-  React.useEffect(() => {
-    const getProduct = async () => {
-      dispatch({ type: "FETCH_REQUEST" });
-      try {
-        const tempProducts = await axios.get(`/products/${slug}`);
-        console.log(tempProducts);
-        dispatch({ type: "FETCH_SUCCESS", payload: tempProducts.data });
-      } catch (error) {
-        dispatch({ type: "FETCH_FAIL" });
-      }
-    };
+  useEffect(() => {}, [slug]);
 
-    getProduct();
-  }, [slug]);
+  useEffect(() => {
+    if (successReview) {
+      setRating(0);
+      setComment("");
+    }
+    if (!product || !product.slug || product.slug !== slug) {
+      const getProduct = async () => {
+        dispatch({ type: "FETCH_REQUEST" });
+        try {
+          const tempProducts = await axios.get(`/products/${slug}`);
+          console.log(tempProducts);
+          dispatch({ type: "FETCH_SUCCESS", payload: tempProducts.data });
+        } catch (error) {
+          dispatch({ type: "FETCH_FAIL" });
+        }
+      };
+
+      getProduct();
+      dispatch({ type: "PRODUCT_CREATE_REVIEW_RESET" });
+    }
+
+    if (render) {
+      setRender(false);
+    }
+  }, [dispatch, slug, successReview, render]);
 
   //get all the products
-
-  // useEffect(() => {
-  //   const getProducts = async () => {
-  //     setLoader(true);
-  //     try {
-  //       const { data } = await axios.get("/products");
-  //       let tempRelatedProduct = data.filter(
-  //         (item) =>
-  //           item.category === product.category && item.name !== product.name
-  //       );
-  //       setRelatedProducts(tempRelatedProduct);
-  //       setLoader(false);
-  //     } catch (error) {
-  //       setLoader(false);
-  //     }
-  //   };
-
-  //   getProducts();
-  // }, [product.category, product.name]);
 
   const handleAddtoCart = async () => {
     const existingItem = cart.cartItems.find(
@@ -125,6 +142,33 @@ function ProductDetails() {
         price: discount ? discount : product.price,
       },
     });
+  };
+
+  const submitHandler = async (e, id, review) => {
+    e.preventDefault();
+    try {
+      dispatch2({ type: " PRODUCT_CREATE_REVIEW_BEGIN" });
+
+      const { data } = await axios.post(
+        `/products/${id}/reviews`,
+        {
+          rating,
+          comment,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state3.userInfo.token}`,
+          },
+        }
+      );
+      dispatch2({ type: "PRODUCT_CREATE_REVIEW_SUCCESS", payload: data });
+      setRender(true);
+    } catch (error) {
+      dispatch2({
+        type: "PRODUCT_CREATE_REVIEW_FAIL",
+        payload: error.response.data.msg,
+      });
+    }
   };
 
   //react slick settings
@@ -149,19 +193,11 @@ function ProductDetails() {
       setAlert(true);
     }
   };
-  // else if (offer.find((i) => i.coupon === coupon)) {
-  //   let productTemp = offer.find((i) => i.coupon === coupon);
 
-  //   let total = state.cart.cartItems.reduce(
-  //     (acc, cur) => acc + cur.quantity * cur.price,
-  //     0
-  //   );
-
-  // }
-  // console.log(discount);
   return (
     <>
       {alert ? <Alert>The Coupon does not Exists !!!</Alert> : ""}
+      {errorReview ? <Alert>{errorReview}</Alert> : ""}
       <div className="mt-5 pt-5">
         {product ? (
           <Container>
@@ -243,6 +279,66 @@ function ProductDetails() {
                     Apply Coupon
                   </Button>
                 </div>
+              </Col>
+              <Col lg={12}>
+                <div className="my-4">
+                  <h5>Write a Customer Review</h5>
+                </div>
+                <div>
+                  {product
+                    ? product.reviews
+                      ? product.reviews.map((review) => (
+                          <ListGroup.Item key={review._id}>
+                            <strong>{review.name}</strong>
+                            <Ratings
+                              ratings={review.rating}
+                              numberOfRatings={product.numReviews}
+                            />
+                          </ListGroup.Item>
+                        ))
+                      : ""
+                    : ""}
+                </div>
+                {state3.userInfo !== null ? (
+                  <Form>
+                    <Form.Group controlId="rating">
+                      <Form.Label>Rating</Form.Label>
+                      <Form.Control
+                        as="select"
+                        value={rating}
+                        onChange={(e) => setRating(e.target.value)}
+                      >
+                        <option value="">Select...</option>
+                        <option value="1">1 - Poor</option>
+                        <option value="2">2 - Fair</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Very Good</option>
+                        <option value="5">5 - Excellent</option>
+                      </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="comment">
+                      <Form.Label>Comment</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        row="3"
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                    <Button
+                      disabled={loadingReview}
+                      type="submit"
+                      variant="primary"
+                      onClick={(e) => submitHandler(e, product._id, comment)}
+                    >
+                      Submit
+                    </Button>
+                  </Form>
+                ) : (
+                  <Alert>
+                    Please <Link to="/login">sign in</Link> to write a review{" "}
+                  </Alert>
+                )}
               </Col>
             </Row>
           </Container>

@@ -62,7 +62,11 @@ function Appbar() {
                   <NavDropdown
                     title={
                       <span className="text-white my-auto">
-                        {userInfo.user.name}
+                        {userInfo
+                          ? userInfo.user.name
+                            ? userInfo.user.name
+                            : ""
+                          : ""}
                       </span>
                     }
                     id="basic-nav-dropdown dropdownFix"
