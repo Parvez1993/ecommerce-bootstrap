@@ -292,8 +292,9 @@ function ProductDetails() {
                             <strong>{review.name}</strong>
                             <Ratings
                               ratings={review.rating}
-                              numberOfRatings={product.numReviews}
+                              numberOfRatings={product.numberofrating}
                             />
+                            <strong>{review.comment}</strong>
                           </ListGroup.Item>
                         ))
                       : ""

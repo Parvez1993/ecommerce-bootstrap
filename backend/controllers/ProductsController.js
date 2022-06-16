@@ -94,7 +94,7 @@ const updateReviews = async (req, res) => {
 
       product.reviews.push(review);
 
-      product.numReviews = product.reviews.length;
+      product.numberofrating = product.reviews.length;
 
       product.rating =
         product.reviews.reduce((acc, item) => item.rating + acc, 0) /
