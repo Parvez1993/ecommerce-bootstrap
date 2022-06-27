@@ -1,7 +1,7 @@
 const Product = require("../models/ProductModels.js");
 const NotFoundError = require("../errors/not-found.js");
 const User = require("../models/UserModels.js");
-
+const Affiliate = require("../models/AffiliateModels.js");
 const getProducts = async (req, res) => {
   const products = await Product.find();
   res.send(products);
@@ -9,10 +9,30 @@ const getProducts = async (req, res) => {
 
 const getSingleProducts = async (req, res) => {
   const slug = req.params.slug;
-  let product = await Product.findOne({ slug });
+  let user = await User.findById(req.query.id);
+  let product = await Product.findOne({ slug: req.params.slug });
+  if (user) {
+    if (product) {
+      res.send(product);
+      let affiliateInfo = {
+        amount: (product.price * 10) / 100,
+        owner: req.query.id,
+      };
+      const affiliate = new Affiliate(affiliateInfo);
+      affiliate.save();
+    } else {
+      res.status(404).send({ msg: "Product Not Found" });
+    }
+  } else {
+    let product = await Product.findOne({ slug: req.params.slug });
+    if (product) {
+      res.send(product);
+    } else {
+      res.status(404).send({ msg: "Product Not Found" });
+    }
+  }
 
-  console.log("params", req.params.slug);
-  res.send(product);
+  // res.send(product);
 };
 
 const uploadProduct = async (req, res) => {

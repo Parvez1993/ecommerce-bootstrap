@@ -11,7 +11,7 @@ import {
   Spinner,
   Table,
 } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import Ratings from "../components/Ratings";
@@ -72,6 +72,10 @@ function ProductDetails() {
     initialState
   );
 
+  const [searchParams] = useSearchParams();
+
+  let id = searchParams.get("id");
+
   const [
     { success: successReview, loading: loadingReview, error: errorReview },
     dispatch2,
@@ -100,11 +104,20 @@ function ProductDetails() {
       setRating(0);
       setComment("");
     }
+
+    let affiName;
+
+    if (id) {
+      affiName = id;
+    }
+
     if (!product || !product.slug || product.slug !== slug) {
       const getProduct = async () => {
         dispatch({ type: "FETCH_REQUEST" });
         try {
-          const tempProducts = await axios.get(`/products/${slug}`);
+          const tempProducts = await axios.get(
+            `/products/${slug}?id=${affiName}`
+          );
           console.log(tempProducts);
           dispatch({ type: "FETCH_SUCCESS", payload: tempProducts.data });
         } catch (error) {

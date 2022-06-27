@@ -130,7 +130,7 @@ function Product() {
                         <Link
                           to={
                             state3.userInfo.user.isAffiliate
-                              ? `/products/${item.slug}?name:${state3.userInfo.user.name}`
+                              ? `/products/${item.slug}?id=${state3.userInfo.user._id}`
                               : `/products/${item.slug}`
                           }
                         >
