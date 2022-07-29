@@ -25,6 +25,7 @@ import Dashboard from "./pages/Dashboard";
 import VirtualCard from "./pages/VirtualCard";
 import Affiliate from "./pages/Affiliate";
 import AffiliateLink from "./pages/AffiliateLink";
+import UserList from "./pages/UserList";
 const Product = React.lazy(() => import("./pages/Product"));
 function App() {
   const [show, setShow] = useState(false);
@@ -165,6 +166,7 @@ function App() {
           <Route path="/history" element={<History />}></Route>
           <Route path="/vendor" element={<Vendor />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/adminuserList" element={<UserList />}></Route>
           <Route path="/vcard" element={<VirtualCard />}></Route>
 
           {/* //affiliate */}
